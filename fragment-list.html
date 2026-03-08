@@ -1,0 +1,136 @@
+<div class="fragment-root">
+  <h2 class="fragment-title">Java List</h2>
+  <p class="fragment-desc"><code>List</code> is a dynamic, ordered collection from the Java Collections Framework — it grows and shrinks automatically.</p>
+
+  <div class="code-block">
+    <div class="code-line"><span class="kw">import</span><span class="plain"> java.util.</span><span class="classname tooltip-host" data-tip="tip-list-import">List</span><span class="plain">;</span></div>
+    <div class="code-line"><span class="kw">import</span><span class="plain"> java.util.</span><span class="classname">ArrayList</span><span class="plain">;</span></div>
+    <div class="code-line"><span class="kw">import</span><span class="plain"> java.util.</span><span class="classname">Collections</span><span class="plain">;</span></div>
+    <div class="code-line">&nbsp;</div>
+    <div class="code-line"><span class="kw">public class</span><span class="classname"> ListDemo</span><span class="plain"> {</span></div>
+    <div class="code-line indent1"><span class="kw">public static void</span><span class="plain"> main(String[] args) {</span></div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ① Create an ArrayList</span></div>
+    <div class="code-line indent2">
+      <span class="classname tooltip-host" data-tip="tip-list-decl">List</span><span class="plain">&lt;</span><span class="classname tooltip-host" data-tip="tip-list-generic">String</span><span class="plain">&gt; fruits = </span>
+      <span class="kw">new</span><span class="plain"> </span><span class="classname">ArrayList</span><span class="plain">&lt;&gt;();</span>
+    </div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ② Add elements</span></div>
+    <div class="code-line indent2"><span class="plain">fruits.</span><span class="method tooltip-host" data-tip="tip-list-add">add</span><span class="plain">(</span><span class="str">"Apple"</span><span class="plain">);</span></div>
+    <div class="code-line indent2"><span class="plain">fruits.add(</span><span class="str">"Banana"</span><span class="plain">);</span></div>
+    <div class="code-line indent2"><span class="plain">fruits.add(</span><span class="str">"Cherry"</span><span class="plain">);</span></div>
+    <div class="code-line indent2"><span class="plain">fruits.add(</span><span class="num">1</span><span class="plain">, </span><span class="str">"Mango"</span><span class="plain">);</span><span class="comment">  // insert at index 1</span></div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ③ Access and query</span></div>
+    <div class="code-line indent2">
+      <span class="type">String</span><span class="plain"> first = fruits.</span>
+      <span class="method tooltip-host" data-tip="tip-list-get">get</span>
+      <span class="plain">(</span><span class="num">0</span><span class="plain">);</span><span class="comment">           // "Apple"</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="type">int</span><span class="plain"> size = fruits.</span>
+      <span class="method tooltip-host" data-tip="tip-list-size">size</span>
+      <span class="plain">();</span><span class="comment">              // 4</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="type">boolean</span><span class="plain"> has = fruits.</span>
+      <span class="method tooltip-host" data-tip="tip-list-contains">contains</span>
+      <span class="plain">(</span><span class="str">"Banana"</span><span class="plain">);</span><span class="comment">  // true</span>
+    </div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ④ Update and remove</span></div>
+    <div class="code-line indent2">
+      <span class="plain">fruits.</span><span class="method tooltip-host" data-tip="tip-list-set">set</span>
+      <span class="plain">(</span><span class="num">2</span><span class="plain">, </span><span class="str">"Grape"</span><span class="plain">);</span><span class="comment">        // replace index 2</span>
+    </div>
+    <div class="code-line indent2"><span class="plain">fruits.</span><span class="method tooltip-host" data-tip="tip-list-remove">remove</span><span class="plain">(</span><span class="str">"Banana"</span><span class="plain">);</span><span class="comment">    // by value</span></div>
+    <div class="code-line indent2"><span class="plain">fruits.remove(</span><span class="num">0</span><span class="plain">);</span><span class="comment">             // by index</span></div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ⑤ Iterate</span></div>
+    <div class="code-line indent2"><span class="kw">for</span><span class="plain"> (String f : fruits) System.out.println(f);</span></div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ⑥ Sort and reverse</span></div>
+    <div class="code-line indent2">
+      <span class="plain">Collections.</span><span class="method tooltip-host" data-tip="tip-list-sort">sort</span>
+      <span class="plain">(fruits);</span>
+    </div>
+    <div class="code-line indent2"><span class="plain">Collections.reverse(fruits);</span></div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ⑦ Immutable list (Java 9+)</span></div>
+    <div class="code-line indent2">
+      <span class="classname">List</span><span class="plain">&lt;</span><span class="classname">Integer</span><span class="plain">&gt; nums = </span>
+      <span class="classname tooltip-host" data-tip="tip-list-of">List.of</span>
+      <span class="plain">(</span><span class="num">1</span><span class="plain">, </span><span class="num">2</span><span class="plain">, </span><span class="num">3</span><span class="plain">);</span>
+    </div>
+    <div class="code-line indent1">}</div>
+    <div class="code-line">}</div>
+  </div>
+
+  <div id="tip-list-import" class="speech-bubble">
+    <strong>List (interface)</strong><br>
+    <code>List</code> is an <em>interface</em> — it defines behaviour, not implementation.<br>
+    Common implementations: <code>ArrayList</code> (fast reads), <code>LinkedList</code> (fast inserts).<br>
+    <span class="tip-range">Program to the interface: <code>List&lt;T&gt;</code> not <code>ArrayList&lt;T&gt;</code></span>
+  </div>
+  <div id="tip-list-decl" class="speech-bubble">
+    <strong>List&lt;String&gt;</strong><br>
+    Declaring the variable as the <code>List</code> interface type keeps code flexible.<br>
+    You can later swap <code>ArrayList</code> for <code>LinkedList</code> without changing every usage.<br>
+    <span class="tip-range">This is the Dependency Inversion principle in practice.</span>
+  </div>
+  <div id="tip-list-generic" class="speech-bubble">
+    <strong>Generics ( &lt;String&gt; )</strong><br>
+    The type in angle brackets restricts what the list can hold.<br>
+    Gives you compile-time type safety — no casting needed on retrieval.<br>
+    <span class="tip-range">Without generics you'd need: <code>(String) fruits.get(0)</code></span>
+  </div>
+  <div id="tip-list-add" class="speech-bubble">
+    <strong>.add(element)</strong><br>
+    Appends the element to the <em>end</em> of the list.<br>
+    Use <code>.add(index, element)</code> to insert at a specific position.<br>
+    <span class="tip-range">ArrayList grows automatically by ~50% when capacity is exceeded.</span>
+  </div>
+  <div id="tip-list-get" class="speech-bubble">
+    <strong>.get(index)</strong><br>
+    Returns the element at the given position. Zero-based.<br>
+    Throws <code>IndexOutOfBoundsException</code> if index ≥ size.<br>
+    <span class="tip-range">O(1) for ArrayList, O(n) for LinkedList.</span>
+  </div>
+  <div id="tip-list-size" class="speech-bubble">
+    <strong>.size()</strong><br>
+    Returns the number of elements currently in the list.<br>
+    Unlike arrays, this changes as you add/remove items.<br>
+    <span class="tip-range">Note: it's <code>.size()</code> for collections vs <code>.length</code> for arrays.</span>
+  </div>
+  <div id="tip-list-contains" class="speech-bubble">
+    <strong>.contains(value)</strong><br>
+    Returns <code>true</code> if the list has at least one element equal to the given value.<br>
+    Uses <code>.equals()</code> for comparison — not <code>==</code>.<br>
+    <span class="tip-range">O(n) linear search — consider a <code>HashSet</code> for faster lookups.</span>
+  </div>
+  <div id="tip-list-set" class="speech-bubble">
+    <strong>.set(index, value)</strong><br>
+    Replaces the element at the given index with a new value.<br>
+    Returns the old element that was there before.<br>
+    <span class="tip-range">Throws <code>IndexOutOfBoundsException</code> if index is invalid.</span>
+  </div>
+  <div id="tip-list-remove" class="speech-bubble">
+    <strong>.remove()</strong><br>
+    <code>remove("Banana")</code> — removes <em>by value</em> (first match).<br>
+    <code>remove(0)</code> — removes <em>by index</em>.<br>
+    <span class="tip-range">Ambiguity: <code>remove(1)</code> on a <code>List&lt;Integer&gt;</code> removes by index, not value. Use <code>remove(Integer.valueOf(1))</code> to remove by value.</span>
+  </div>
+  <div id="tip-list-sort" class="speech-bubble">
+    <strong>Collections.sort()</strong><br>
+    Sorts the list in natural ascending order using <code>Comparable</code>.<br>
+    For custom order, pass a <code>Comparator</code>: <code>Collections.sort(list, comparator)</code>.<br>
+    <span class="tip-range">Alternatively use: <code>fruits.sort(Comparator.naturalOrder())</code></span>
+  </div>
+  <div id="tip-list-of" class="speech-bubble">
+    <strong>List.of() — Immutable List</strong><br>
+    Creates a list that <em>cannot</em> be modified — no add, remove, or set.<br>
+    Great for constants and safe API returns.<br>
+    <span class="tip-range">Available since Java 9. Throws <code>UnsupportedOperationException</code> on modification.</span>
+  </div>
+</div>

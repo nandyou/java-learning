@@ -1,0 +1,156 @@
+<div class="fragment-root">
+  <h2 class="fragment-title">Arithmetic Operations</h2>
+  <p class="fragment-desc">Java supports standard math operators, shorthand assignments, increment/decrement, and order-of-precedence rules.</p>
+
+  <div class="code-block">
+    <div class="code-line"><span class="kw">public class</span><span class="classname"> ArithmeticDemo</span><span class="plain"> {</span></div>
+    <div class="code-line indent1"><span class="kw">public static void</span><span class="plain"> main(String[] args) {</span></div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ① Basic operators</span></div>
+    <div class="code-line indent2"><span class="type">int</span><span class="plain"> a = </span><span class="num">10</span><span class="plain">, b = </span><span class="num">3</span><span class="plain">;</span></div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2">
+      <span class="type">int</span><span class="plain"> sum  = a </span>
+      <span class="method tooltip-host" data-tip="tip-op-add">+</span>
+      <span class="plain"> b;</span><span class="comment">   // 13</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="type">int</span><span class="plain"> diff = a </span>
+      <span class="method tooltip-host" data-tip="tip-op-sub">-</span>
+      <span class="plain"> b;</span><span class="comment">   //  7</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="type">int</span><span class="plain"> prod = a </span>
+      <span class="method tooltip-host" data-tip="tip-op-mul">*</span>
+      <span class="plain"> b;</span><span class="comment">   // 30</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="type">int</span><span class="plain"> quot = a </span>
+      <span class="method tooltip-host" data-tip="tip-op-div">/</span>
+      <span class="plain"> b;</span><span class="comment">   //  3  (integer division — truncates!)</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="type">int</span><span class="plain"> rem  = a </span>
+      <span class="method tooltip-host" data-tip="tip-op-mod">%</span>
+      <span class="plain"> b;</span><span class="comment">   //  1  (remainder)</span>
+    </div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ② Floating-point division</span></div>
+    <div class="code-line indent2">
+      <span class="type tooltip-host" data-tip="tip-op-float">double</span>
+      <span class="plain"> exact = (</span><span class="type">double</span><span class="plain">) a / b;</span><span class="comment">  // 3.3333...</span>
+    </div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ③ Compound assignment operators</span></div>
+    <div class="code-line indent2">
+      <span class="plain">a </span><span class="method tooltip-host" data-tip="tip-op-compound">+=</span>
+      <span class="plain"> </span><span class="num">5</span><span class="plain">;</span><span class="comment">  // a = a + 5  → 15</span>
+    </div>
+    <div class="code-line indent2"><span class="plain">a -= </span><span class="num">2</span><span class="plain">;</span><span class="comment">  // a = a - 2  → 13</span></div>
+    <div class="code-line indent2"><span class="plain">a *= </span><span class="num">3</span><span class="plain">;</span><span class="comment">  // a = a * 3  → 39</span></div>
+    <div class="code-line indent2"><span class="plain">a /= </span><span class="num">4</span><span class="plain">;</span><span class="comment">  // a = a / 4  →  9</span></div>
+    <div class="code-line indent2"><span class="plain">a %= </span><span class="num">4</span><span class="plain">;</span><span class="comment">  // a = a % 4  →  1</span></div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ④ Increment / Decrement</span></div>
+    <div class="code-line indent2">
+      <span class="type">int</span><span class="plain"> x = </span><span class="num">5</span><span class="plain">;</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="plain">x</span>
+      <span class="method tooltip-host" data-tip="tip-op-inc">++</span>
+      <span class="plain">;</span><span class="comment">  // post-increment: use then add 1  → x = 6</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="method tooltip-host" data-tip="tip-op-pre">--</span>
+      <span class="plain">x;</span><span class="comment">  // pre-decrement:  subtract 1 then use → x = 5</span>
+    </div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ⑤ Operator precedence</span></div>
+    <div class="code-line indent2">
+      <span class="type">int</span><span class="plain"> result = </span>
+      <span class="num tooltip-host" data-tip="tip-op-prec">2</span>
+      <span class="plain"> + </span><span class="num">3</span><span class="plain"> * </span><span class="num">4</span><span class="plain">;</span><span class="comment">       // 14, not 20</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="type">int</span><span class="plain"> forced = (</span><span class="num">2</span><span class="plain"> + </span><span class="num">3</span><span class="plain">) * </span><span class="num">4</span><span class="plain">;</span><span class="comment">  // 20 — brackets first</span>
+    </div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ⑥ Math utility</span></div>
+    <div class="code-line indent2">
+      <span class="type">double</span><span class="plain"> root = </span>
+      <span class="classname tooltip-host" data-tip="tip-op-math">Math</span>
+      <span class="plain">.sqrt(</span><span class="num">144</span><span class="plain">);</span><span class="comment">  // 12.0</span>
+    </div>
+    <div class="code-line indent2"><span class="type">double</span><span class="plain"> power = Math.pow(</span><span class="num">2</span><span class="plain">, </span><span class="num">10</span><span class="plain">);</span><span class="comment"> // 1024.0</span></div>
+    <div class="code-line indent2"><span class="type">int</span><span class="plain">    abs   = Math.abs(-</span><span class="num">42</span><span class="plain">);</span><span class="comment"> // 42</span></div>
+    <div class="code-line indent1">}</div>
+    <div class="code-line">}</div>
+  </div>
+
+  <div id="tip-op-add" class="speech-bubble">
+    <strong>+ Addition</strong><br>
+    Adds two numbers. Also used for <em>String concatenation</em>: <code>"Hello" + " World"</code>.<br>
+    When mixing types, the result is widened: <code>int + double → double</code>.<br>
+    <span class="tip-range">Avoid heavy <code>+</code> in loops — use <code>StringBuilder</code> instead.</span>
+  </div>
+  <div id="tip-op-sub" class="speech-bubble">
+    <strong>- Subtraction</strong><br>
+    Subtracts the right operand from the left.<br>
+    Also used as unary minus: <code>-a</code> negates the value.<br>
+    <span class="tip-range">Be careful with unsigned values — Java's <code>int</code> is signed.</span>
+  </div>
+  <div id="tip-op-mul" class="speech-bubble">
+    <strong>* Multiplication</strong><br>
+    Multiplies two numbers. Result type follows the wider of the two operands.<br>
+    <span class="tip-range">Watch for overflow: <code>int * int</code> can exceed Integer.MAX_VALUE silently.</span>
+  </div>
+  <div id="tip-op-div" class="speech-bubble">
+    <strong>/ Division</strong><br>
+    When <em>both</em> operands are integers, result is truncated toward zero (no rounding).<br>
+    <code>10 / 3 = 3</code>, not 3.33<br>
+    Division by zero throws <strong>ArithmeticException</strong>!<br>
+    <span class="tip-range">Cast one operand to <code>double</code> for decimal result.</span>
+  </div>
+  <div id="tip-op-mod" class="speech-bubble">
+    <strong>% Modulus (Remainder)</strong><br>
+    Returns what's left over after integer division.<br>
+    Common uses: check even/odd (<code>n % 2 == 0</code>), wrap around (<code>index % size</code>).<br>
+    <span class="tip-range">Result keeps the sign of the left operand in Java.</span>
+  </div>
+  <div id="tip-op-float" class="speech-bubble">
+    <strong>Casting for float division</strong><br>
+    <code>(double) a</code> temporarily converts the int to a double <em>before</em> dividing.<br>
+    This forces the division to produce a decimal result.<br>
+    <span class="tip-range">Alternatively write: <code>a / (double) b</code> or <code>a / 3.0</code></span>
+  </div>
+  <div id="tip-op-compound" class="speech-bubble">
+    <strong>Compound Assignment ( += )</strong><br>
+    Shorthand that combines an operation with assignment. All operators have compound forms:<br>
+    <code>+=  -=  *=  /=  %=</code><br>
+    <span class="tip-range">They also include an implicit narrowing cast: <code>byte b; b += 1;</code> compiles fine.</span>
+  </div>
+  <div id="tip-op-inc" class="speech-bubble">
+    <strong>Post-increment ( x++ )</strong><br>
+    Returns the current value of <code>x</code>, <em>then</em> increments by 1.<br>
+    <code>int y = x++;</code> → y gets old value, x increases.<br>
+    <span class="tip-range">Compare with pre-increment <code>++x</code>: increments first, then returns.</span>
+  </div>
+  <div id="tip-op-pre" class="speech-bubble">
+    <strong>Pre-decrement ( --x )</strong><br>
+    Decrements <code>x</code> by 1 <em>first</em>, then returns the new value.<br>
+    <code>int y = --x;</code> → both y and x get the decreased value.<br>
+    <span class="tip-range">As a standalone statement <code>x++</code> and <code>++x</code> behave identically.</span>
+  </div>
+  <div id="tip-op-prec" class="speech-bubble">
+    <strong>Operator Precedence</strong><br>
+    Java follows BODMAS/PEMDAS: <code>*</code> and <code>/</code> before <code>+</code> and <code>-</code>.<br>
+    Use parentheses <code>()</code> to make intent explicit and override default order.<br>
+    <span class="tip-range">When in doubt, add brackets — clarity beats brevity.</span>
+  </div>
+  <div id="tip-op-math" class="speech-bubble">
+    <strong>Math class</strong><br>
+    <code>java.lang.Math</code> (auto-imported) provides common mathematical functions.<br>
+    All methods are <code>static</code> — call them on the class directly.<br>
+    <span class="tip-range">Common: <code>sqrt</code>, <code>pow</code>, <code>abs</code>, <code>max</code>, <code>min</code>, <code>floor</code>, <code>ceil</code>, <code>round</code>, <code>random</code></span>
+  </div>
+</div>

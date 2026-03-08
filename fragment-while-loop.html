@@ -1,0 +1,111 @@
+<div class="fragment-root">
+  <h2 class="fragment-title">The while Loop</h2>
+  <p class="fragment-desc">The <code>while</code> loop repeats as long as a condition is <code>true</code>. Use it when the number of iterations is <em>not known in advance</em>.</p>
+
+  <div class="code-block">
+    <div class="code-line"><span class="kw">public class</span><span class="classname"> WhileDemo</span><span class="plain"> {</span></div>
+    <div class="code-line indent1"><span class="kw">public static void</span><span class="plain"> main(String[] args) {</span></div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ① Basic while loop</span></div>
+    <div class="code-line indent2">
+      <span class="type tooltip-host" data-tip="tip-while-var">int</span>
+      <span class="plain"> count = </span><span class="num">1</span><span class="plain">;</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="kw tooltip-host" data-tip="tip-while-cond">while</span>
+      <span class="plain"> (count &lt;= </span><span class="num">5</span><span class="plain">) {</span>
+    </div>
+    <div class="code-line indent3" style="padding-left:6em">
+      <span class="plain">System.out.println(</span><span class="str">"Iteration: "</span><span class="plain"> + count);</span>
+    </div>
+    <div class="code-line indent3" style="padding-left:6em">
+      <span class="plain">count</span>
+      <span class="method tooltip-host" data-tip="tip-while-update">++</span>
+      <span class="plain">;</span><span class="comment">  // ← must progress toward false!</span>
+    </div>
+    <div class="code-line indent2">}</div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ② Reading until sentinel value</span></div>
+    <div class="code-line indent2">
+      <span class="type">int</span><span class="plain"> input = </span><span class="num">0</span><span class="plain">;</span>
+    </div>
+    <div class="code-line indent2"><span class="kw">while</span><span class="plain"> (input != </span><span class="num tooltip-host" data-tip="tip-while-sentinel">-1</span><span class="plain">) {</span></div>
+    <div class="code-line indent3" style="padding-left:6em"><span class="comment">// process input...</span></div>
+    <div class="code-line indent3" style="padding-left:6em"><span class="plain">input = getNextValue();</span><span class="comment"> // imaginary method</span></div>
+    <div class="code-line indent2">}</div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ③ Summing digits of a number</span></div>
+    <div class="code-line indent2"><span class="type">int</span><span class="plain"> number = </span><span class="num">12345</span><span class="plain">;</span></div>
+    <div class="code-line indent2"><span class="type">int</span><span class="plain"> digitSum = </span><span class="num">0</span><span class="plain">;</span></div>
+    <div class="code-line indent2">
+      <span class="kw">while</span><span class="plain"> (</span>
+      <span class="plain tooltip-host" data-tip="tip-while-nonzero">number</span>
+      <span class="plain"> &gt; </span><span class="num">0</span><span class="plain">) {</span>
+    </div>
+    <div class="code-line indent3" style="padding-left:6em">
+      <span class="plain">digitSum += number </span>
+      <span class="method tooltip-host" data-tip="tip-while-mod">%</span>
+      <span class="plain"> </span><span class="num">10</span><span class="plain">;</span><span class="comment">  // last digit</span>
+    </div>
+    <div class="code-line indent3" style="padding-left:6em"><span class="plain">number /= </span><span class="num">10</span><span class="plain">;</span><span class="comment">           // chop last digit</span></div>
+    <div class="code-line indent2">}</div>
+    <div class="code-line indent2"><span class="comment">// digitSum = 15 (1+2+3+4+5)</span></div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ④ Infinite loop with break</span></div>
+    <div class="code-line indent2">
+      <span class="kw">while</span>
+      <span class="plain"> (</span>
+      <span class="kw tooltip-host" data-tip="tip-while-true">true</span>
+      <span class="plain">) {</span>
+    </div>
+    <div class="code-line indent3" style="padding-left:6em"><span class="type">String</span><span class="plain"> cmd = readCommand();</span></div>
+    <div class="code-line indent3" style="padding-left:6em"><span class="kw">if</span><span class="plain"> (cmd.equals(</span><span class="str">"quit"</span><span class="plain">)) </span><span class="kw">break</span><span class="plain">;</span></div>
+    <div class="code-line indent3" style="padding-left:6em"><span class="plain">processCommand(cmd);</span></div>
+    <div class="code-line indent2">}</div>
+    <div class="code-line indent1">}</div>
+    <div class="code-line">}</div>
+  </div>
+
+  <div id="tip-while-var" class="speech-bubble">
+    <strong>Loop variable initialisation</strong><br>
+    The variable must be declared <em>outside</em> the while loop (unlike the for loop).<br>
+    This also means it's accessible after the loop ends.<br>
+    <span class="tip-range">Use <code>for</code> when you need the counter scoped to the loop only.</span>
+  </div>
+  <div id="tip-while-cond" class="speech-bubble">
+    <strong>while ( condition )</strong><br>
+    The condition is evaluated <em>before</em> every iteration.<br>
+    If it's <code>false</code> on the very first check, the body never runs.<br>
+    <span class="tip-range">This makes <code>while</code> a "zero-or-more" loop (vs <code>do-while</code> which is "one-or-more").</span>
+  </div>
+  <div id="tip-while-update" class="speech-bubble">
+    <strong>Progressing the condition</strong><br>
+    You <em>must</em> change the condition variable inside the loop, or it loops forever.<br>
+    This is the most common source of infinite loops in Java!<br>
+    <span class="tip-range">IDE debugger tip: set a breakpoint here to watch the value change.</span>
+  </div>
+  <div id="tip-while-sentinel" class="speech-bubble">
+    <strong>Sentinel Value</strong><br>
+    A special value (-1 here) that signals "stop reading".<br>
+    Common pattern for reading streams of data with an unknown endpoint.<br>
+    <span class="tip-range">Example: <code>Scanner.nextLine()</code> returning null at end-of-file.</span>
+  </div>
+  <div id="tip-while-nonzero" class="speech-bubble">
+    <strong>number > 0 as condition</strong><br>
+    The loop continues while there are digits left to process.<br>
+    When <code>number</code> becomes 0 after all digits are removed, the loop stops naturally.<br>
+    <span class="tip-range">Classic algorithmic pattern for digit extraction, base conversion.</span>
+  </div>
+  <div id="tip-while-mod" class="speech-bubble">
+    <strong>% 10 — Extract Last Digit</strong><br>
+    Remainder when dividing by 10 gives you the rightmost digit.<br>
+    Then <code>/ 10</code> removes that digit from the number.<br>
+    <span class="tip-range">Example: 12345 % 10 = 5, then 12345 / 10 = 1234, repeat...</span>
+  </div>
+  <div id="tip-while-true" class="speech-bubble">
+    <strong>while(true) — Intentional Infinite Loop</strong><br>
+    A deliberate pattern for event loops, server loops, game loops.<br>
+    Always pair with a <code>break</code> or <code>return</code> statement inside.<br>
+    <span class="tip-range">Used in REPLs (read-eval-print loops) and menu-driven programs.</span>
+  </div>
+</div>

@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Java Explorer</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1e2530;
+    --border: #30363d;
+    --accent: #58a6ff;
+    --accent2: #3fb950;
+    --accent3: #f78166;
+    --yellow: #e3b341;
+    --purple: #d2a8ff;
+    --teal: #39d353;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --code-bg: #161b22;
+    --kw: #ff7b72;
+    --type: #79c0ff;
+    --str: #a5d6ff;
+    --num: #f2cc60;
+    --method: #d2a8ff;
+    --comment: #6e7681;
+    --classname: #ffa657;
+    --tooltip-bg: #1c2333;
+    --tooltip-border: #388bfd;
+    --bubble-shadow: 0 8px 32px rgba(56,139,253,0.25);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Sora', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(10px);
+  }
+
+  .logo {
+    width: 40px; height: 40px;
+    background: linear-gradient(135deg, var(--accent), var(--purple));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; font-size: 18px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  header h1 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+
+  header span {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-weight: 300;
+    margin-top: 2px;
+  }
+
+  /* ─── LAYOUT ─── */
+  main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* ─── SEARCH ─── */
+  .search-section {
+    margin-bottom: 40px;
+  }
+
+  .search-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .search-wrapper {
+    position: relative;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    pointer-events: none;
+    font-size: 16px;
+  }
+
+  #search-input {
+    width: 100%;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px 14px 46px;
+    color: var(--text);
+    font-family: 'Sora', sans-serif;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+
+  #search-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(88,166,255,0.15);
+  }
+
+  #search-input::placeholder { color: var(--muted); }
+
+  /* ─── DROPDOWN ─── */
+  #dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0; right: 0;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+    z-index: 100;
+    display: none;
+    animation: dropIn 0.15s ease;
+  }
+
+  #dropdown.open { display: block; }
+
+  @keyframes dropIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .drop-item {
+    padding: 13px 18px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .drop-item:last-child { border-bottom: none; }
+  .drop-item:hover { background: var(--surface2); }
+  .drop-item.active { background: rgba(88,166,255,0.1); }
+
+  .drop-item .item-label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+
+  .drop-item .item-desc {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  .drop-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .no-results {
+    padding: 16px 18px;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  /* ─── FRAGMENT PANEL ─── */
+  #fragment-panel {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    min-height: 200px;
+    padding: 36px;
+    position: relative;
+    transition: border-color 0.3s;
+  }
+
+  #fragment-panel:has(.fragment-root) {
+    border-color: #30363d;
+  }
+
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    gap: 12px;
+    color: var(--muted);
+  }
+
+  .empty-icon { font-size: 48px; opacity: 0.4; }
+  .empty-state p { font-size: 0.95rem; }
+
+  /* ─── SELECTED TOPIC BADGE ─── */
+  .topic-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(88,166,255,0.1);
+    border: 1px solid rgba(88,166,255,0.3);
+    border-radius: 20px;
+    padding: 4px 12px 4px 8px;
+    font-size: 0.78rem;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 24px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .topic-badge:hover { background: rgba(88,166,255,0.18); }
+  .topic-badge .close-x { opacity: 0.7; font-size: 12px; }
+
+  /* ─── FRAGMENT STYLES ─── */
+  .fragment-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .fragment-desc {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+
+  /* ─── CODE BLOCK ─── */
+  .code-block {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.84rem;
+    line-height: 1.8;
+    overflow-x: auto;
+    position: relative;
+    transition: filter 0.25s ease;
+  }
+
+  .code-block.blurred {
+    filter: blur(3px) brightness(0.6);
+  }
+
+  .code-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    white-space: pre;
+    min-height: 1.8em;
+  }
+
+  .indent1 { padding-left: 2em; }
+  .indent2 { padding-left: 4em; }
+
+  /* Syntax colors */
+  .kw     { color: var(--kw); }
+  .type   { color: var(--type); }
+  .str    { color: var(--str); }
+  .num    { color: var(--num); }
+  .method { color: var(--method); }
+  .comment{ color: var(--comment); font-style: italic; }
+  .classname { color: var(--classname); }
+  .plain  { color: var(--text); }
+
+  /* ─── TOOLTIP HOSTS ─── */
+  .tooltip-host {
+    cursor: pointer;
+    border-radius: 3px;
+    position: relative;
+    transition: background 0.15s, box-shadow 0.15s;
+  }
+
+  .tooltip-host:hover,
+  .tooltip-host.tip-active {
+    background: rgba(88,166,255,0.18);
+    box-shadow: 0 0 0 2px rgba(88,166,255,0.35);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(88,166,255,0.5);
+  }
+
+  /* ─── SPEECH BUBBLE ─── */
+  .speech-bubble {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    max-width: 320px;
+    background: var(--tooltip-bg);
+    border: 1.5px solid var(--tooltip-border);
+    border-radius: 14px;
+    padding: 16px 18px;
+    font-family: 'Sora', sans-serif;
+    font-size: 0.83rem;
+    line-height: 1.6;
+    color: var(--text);
+    box-shadow: var(--bubble-shadow);
+    pointer-events: none;
+    animation: bubbleIn 0.18s cubic-bezier(0.34,1.56,0.64,1);
+  }
+
+  .speech-bubble.visible {
+    display: block;
+  }
+
+  /* Arrow */
+  .speech-bubble::before {
+    content: '';
+    position: absolute;
+    bottom: -9px;
+    left: 22px;
+    width: 16px; height: 16px;
+    background: var(--tooltip-bg);
+    border-right: 1.5px solid var(--tooltip-border);
+    border-bottom: 1.5px solid var(--tooltip-border);
+    transform: rotate(45deg);
+  }
+
+  .speech-bubble.arrow-below::before {
+    bottom: auto;
+    top: -9px;
+    transform: rotate(225deg);
+  }
+
+  @keyframes bubbleIn {
+    from { opacity: 0; transform: scale(0.88) translateY(6px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .speech-bubble strong {
+    color: var(--accent);
+    font-size: 0.88rem;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .speech-bubble code {
+    background: rgba(88,166,255,0.12);
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--type);
+  }
+
+  .speech-bubble em { color: var(--yellow); font-style: normal; font-weight: 600; }
+
+  .tip-range {
+    display: block;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+
+  /* ─── OVERLAY ─── */
+  #overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 900;
+    background: transparent;
+  }
+
+  #overlay.active { display: block; }
+
+  /* ─── MODIFIER TABLE ─── */
+  .modifier-table {
+    margin-top: 28px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    font-size: 0.82rem;
+  }
+
+  .mod-row {
+    display: grid;
+    grid-template-columns: 120px 1fr 1fr 1fr 1fr;
+    align-items: center;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    gap: 8px;
+    transition: background 0.15s;
+  }
+
+  .mod-row:last-child { border-bottom: none; }
+  .mod-row.tooltip-host:hover { background: var(--surface2); cursor: pointer; }
+
+  .header-row {
+    background: var(--surface2);
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+
+  .badge.pub  { background: rgba(63,185,80,0.15);  color: var(--accent2); border: 1px solid rgba(63,185,80,0.3); }
+  .badge.prot { background: rgba(255,166,87,0.15); color: var(--classname); border: 1px solid rgba(255,166,87,0.3); }
+  .badge.def  { background: rgba(88,166,255,0.12); color: var(--accent);   border: 1px solid rgba(88,166,255,0.3); }
+  .badge.priv { background: rgba(247,129,102,0.12); color: var(--accent3); border: 1px solid rgba(247,129,102,0.3); }
+
+  .tick { color: var(--accent2); font-weight: 700; text-align: center; }
+  .cross { color: var(--accent3); font-weight: 700; text-align: center; }
+
+  /* Loading state */
+  .loading { color: var(--muted); font-size: 0.9rem; padding: 20px 0; }
+
+  /* Fade in */
+  .fragment-root {
+    animation: fadeUp 0.3s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Keyboard hint */
+  .kbd-hint {
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  kbd {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+</style>
+</head>
+<body>
+
+<main>
+  <!-- SEARCH -->
+  <div class="search-section">
+    <label class="search-label" for="search-input">Browse Topics</label>
+    <div class="search-wrapper" id="search-wrapper">
+      <span class="search-icon">⌕</span>
+      <input
+        type="text"
+        id="search-input"
+        placeholder="Search topics — e.g. 'methods', 'class', 'types'…"
+        autocomplete="off"
+      />
+      <div id="dropdown"></div>
+    </div>
+  </div>
+
+  <!-- FRAGMENT PANEL -->
+  <div id="fragment-panel">
+    <div class="empty-state" id="empty-state">
+      <div class="empty-icon">☕</div>
+      <p>Select a topic above to explore Java concepts</p>
+    </div>
+  </div>
+</main>
+
+<!-- OVERLAY (catches outside clicks to close bubbles) -->
+<div id="overlay"></div>
+
+<script>
+  // ─── STATE ───────────────────────────────────────────
+  let topics = [];
+  let activeTopic = null;
+  let selectedIndex = -1;
+  let filtered = [];
+  let activeBubble = null;
+  let activeHost = null;
+
+  // ─── LOAD DATA ────────────────────────────────────────
+  async function loadData() {
+    try {
+      const res = await fetch('data.json');
+      const data = await res.json();
+      topics = data.topics;
+    } catch (e) {
+      console.error('Failed to load data.json', e);
+    }
+  }
+
+  // ─── SEARCH & DROPDOWN ───────────────────────────────
+  const searchInput = document.getElementById('search-input');
+  const dropdown    = document.getElementById('dropdown');
+
+  function renderDropdown(items) {
+    if (items.length === 0) {
+      dropdown.innerHTML = '<div class="no-results">No topics found</div>';
+    } else {
+      dropdown.innerHTML = items.map((t, i) => `
+        <div class="drop-item ${i === selectedIndex ? 'active' : ''}" data-id="${t.id}" data-index="${i}">
+          <div class="drop-dot"></div>
+          <div>
+            <div class="item-label">${highlight(t.label, searchInput.value)}</div>
+            <div class="item-desc">${t.description}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+    dropdown.classList.add('open');
+  }
+
+  function highlight(text, query) {
+    if (!query) return text;
+    const re = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+    return text.replace(re, '<mark style="background:rgba(88,166,255,0.25);color:var(--accent);border-radius:2px;">$1</mark>');
+  }
+
+  function closeDropdown() {
+    dropdown.classList.remove('open');
+    dropdown.innerHTML = '';
+    selectedIndex = -1;
+  }
+
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.trim().toLowerCase();
+    selectedIndex = -1;
+    if (!q) {
+      filtered = [...topics];
+    } else {
+      filtered = topics.filter(t =>
+        t.label.toLowerCase().includes(q) || t.description.toLowerCase().includes(q)
+      );
+    }
+    renderDropdown(filtered);
+  });
+
+  searchInput.addEventListener('focus', () => {
+    filtered = [...topics];
+    renderDropdown(filtered);
+  });
+
+  searchInput.addEventListener('keydown', (e) => {
+    if (!dropdown.classList.contains('open')) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      selectedIndex = Math.min(selectedIndex + 1, filtered.length - 1);
+      renderDropdown(filtered);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      selectedIndex = Math.max(selectedIndex - 1, 0);
+      renderDropdown(filtered);
+    } else if (e.key === 'Enter') {
+      if (selectedIndex >= 0 && filtered[selectedIndex]) {
+        selectTopic(filtered[selectedIndex]);
+      }
+    } else if (e.key === 'Escape') {
+      closeDropdown();
+      searchInput.blur();
+    }
+  });
+
+  dropdown.addEventListener('mousedown', (e) => {
+    const item = e.target.closest('.drop-item');
+    if (item) {
+      const t = topics.find(t => t.id === item.dataset.id);
+      if (t) selectTopic(t);
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!document.getElementById('search-wrapper').contains(e.target)) {
+      closeDropdown();
+    }
+  });
+
+  // ─── LOAD FRAGMENT ────────────────────────────────────
+  async function selectTopic(topic) {
+    activeTopic = topic;
+    searchInput.value = topic.label;
+    closeDropdown();
+
+    const panel = document.getElementById('fragment-panel');
+    panel.innerHTML = '<div class="loading">Loading…</div>';
+
+    try {
+      const res = await fetch(topic.fragment);
+      const html = await res.text();
+      panel.innerHTML = `
+        <div class="topic-badge" id="topic-badge">
+          <span>📗</span> ${topic.label} <span class="close-x">✕</span>
+        </div>
+        ${html}
+      `;
+      document.getElementById('topic-badge').addEventListener('click', () => {
+        panel.innerHTML = `<div class="empty-state" id="empty-state">
+          <div class="empty-icon">☕</div>
+          <p>Select a topic above to explore Java concepts</p>
+        </div>`;
+        searchInput.value = '';
+        activeTopic = null;
+      });
+      attachTooltipListeners();
+    } catch (err) {
+      panel.innerHTML = `<div class="empty-state"><p style="color:var(--accent3)">Failed to load fragment.</p></div>`;
+    }
+  }
+
+  // ─── TOOLTIP / SPEECH BUBBLE SYSTEM ──────────────────
+  function attachTooltipListeners() {
+    const hosts = document.querySelectorAll('.tooltip-host');
+    hosts.forEach(host => {
+      host.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const tipId = host.dataset.tip;
+        const bubble = document.getElementById(tipId);
+        if (!bubble) return;
+
+        // Toggle: clicking same host closes it
+        if (activeBubble === bubble && bubble.classList.contains('visible')) {
+          closeBubble();
+          return;
+        }
+
+        showBubble(host, bubble);
+      });
+    });
+  }
+
+  function showBubble(host, bubble) {
+    // Close previous
+    if (activeBubble) closeBubble();
+
+    // Blur the code block
+    const codeBlock = host.closest('.code-block') || host.closest('.modifier-table');
+    if (codeBlock) codeBlock.classList.add('blurred');
+
+    host.classList.add('tip-active');
+    bubble.classList.add('visible');
+    activeBubble = bubble;
+    activeHost   = host;
+
+    positionBubble(host, bubble);
+
+    // Show overlay
+    document.getElementById('overlay').classList.add('active');
+  }
+
+  function positionBubble(host, bubble) {
+    const rect = host.getBoundingClientRect();
+    const bW = 320; // max-width
+
+    // Default: above the host
+    let top  = rect.top - 12;
+    let left = rect.left;
+
+    // Clamp right edge
+    if (left + bW > window.innerWidth - 12) {
+      left = window.innerWidth - bW - 12;
+    }
+    if (left < 12) left = 12;
+
+    bubble.style.left = left + 'px';
+    bubble.classList.remove('arrow-below');
+
+    // Measure bubble height after making visible
+    bubble.style.visibility = 'hidden';
+    bubble.style.top = '0px';
+    const bH = bubble.offsetHeight;
+    bubble.style.visibility = '';
+
+    if (top - bH - 10 < 10) {
+      // Not enough room above → show below
+      top = rect.bottom + 14;
+      bubble.classList.add('arrow-below');
+      bubble.style.top = top + 'px';
+    } else {
+      bubble.style.top = (top - bH - 6) + 'px';
+    }
+  }
+
+  function closeBubble() {
+    if (activeBubble) {
+      activeBubble.classList.remove('visible');
+
+      // Un-blur
+      if (activeHost) {
+        const codeBlock = activeHost.closest('.code-block') || activeHost.closest('.modifier-table');
+        if (codeBlock) codeBlock.classList.remove('blurred');
+        activeHost.classList.remove('tip-active');
+      }
+
+      activeBubble = null;
+      activeHost   = null;
+    }
+    document.getElementById('overlay').classList.remove('active');
+  }
+
+  // Close on overlay click (outside)
+  document.getElementById('overlay').addEventListener('click', closeBubble);
+
+  // Reposition on scroll/resize
+  window.addEventListener('scroll', () => {
+    if (activeBubble && activeHost) positionBubble(activeHost, activeBubble);
+  }, { passive: true });
+
+  window.addEventListener('resize', () => {
+    if (activeBubble && activeHost) positionBubble(activeHost, activeBubble);
+  });
+
+  // ─── INIT ─────────────────────────────────────────────
+  loadData();
+</script>
+</body>
+</html>

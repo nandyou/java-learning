@@ -1,0 +1,279 @@
+<div class="fragment-root">
+  <h2 class="fragment-title">Spring Controller Mappings</h2>
+  <p class="fragment-desc">Spring provides dedicated annotations for each HTTP verb and powerful tools to extract data from URLs, query strings, request bodies, and headers.</p>
+
+  <div class="code-block">
+    <div class="code-line"><span class="kw">import</span><span class="plain"> org.springframework.web.bind.annotation.*;</span></div>
+    <div class="code-line"><span class="kw">import</span><span class="plain"> org.springframework.http.</span><span class="classname">ResponseEntity</span><span class="plain">;</span></div>
+    <div class="code-line"><span class="kw">import</span><span class="plain"> org.springframework.http.</span><span class="classname">HttpStatus</span><span class="plain">;</span></div>
+    <div class="code-line">&nbsp;</div>
+
+    <div class="code-line"><span class="kw">@</span><span class="classname">RestController</span></div>
+    <div class="code-line"><span class="kw">@</span><span class="classname">RequestMapping</span><span class="plain">(</span><span class="str">"/api/users"</span><span class="plain">)</span></div>
+    <div class="code-line"><span class="kw">public class</span><span class="classname"> UserController</span><span class="plain"> {</span></div>
+    <div class="code-line indent1">&nbsp;</div>
+
+    <div class="code-line indent1"><span class="comment">// ① GET — retrieve all resources</span></div>
+    <div class="code-line indent1">
+      <span class="kw">@</span><span class="classname tooltip-host" data-tip="tip-map-get">GetMapping</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="kw">public</span>
+      <span class="classname"> List</span><span class="plain">&lt;</span><span class="classname">User</span><span class="plain">&gt;</span>
+      <span class="plain"> getAllUsers() {</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="kw">return</span><span class="plain"> userService.findAll();</span>
+    </div>
+    <div class="code-line indent1">}</div>
+    <div class="code-line indent1">&nbsp;</div>
+
+    <div class="code-line indent1"><span class="comment">// ② GET — retrieve one by path variable</span></div>
+    <div class="code-line indent1">
+      <span class="kw">@</span><span class="classname">GetMapping</span>
+      <span class="plain">(</span><span class="str tooltip-host" data-tip="tip-map-pathvar">"/{id}"</span><span class="plain">)</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="kw">public</span>
+      <span class="classname"> User</span>
+      <span class="plain"> getUserById(</span>
+      <span class="kw">@</span><span class="classname tooltip-host" data-tip="tip-map-pathvarbind">PathVariable</span>
+      <span class="type"> Long</span>
+      <span class="plain"> id) {</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="kw">return</span><span class="plain"> userService.findById(id);</span>
+    </div>
+    <div class="code-line indent1">}</div>
+    <div class="code-line indent1">&nbsp;</div>
+
+    <div class="code-line indent1"><span class="comment">// ③ GET — filter with query parameters</span></div>
+    <div class="code-line indent1">
+      <span class="kw">@</span><span class="classname">GetMapping</span>
+      <span class="plain">(</span><span class="str">"/search"</span><span class="plain">)</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="kw">public</span>
+      <span class="classname"> List</span><span class="plain">&lt;</span><span class="classname">User</span><span class="plain">&gt;</span>
+      <span class="plain"> search(</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="kw">@</span><span class="classname tooltip-host" data-tip="tip-map-reqparam">RequestParam</span>
+      <span class="plain">(</span><span class="str">value</span><span class="plain"> = </span><span class="str">"name"</span><span class="plain">, required = </span><span class="kw">false</span><span class="plain">)</span>
+      <span class="type"> String</span><span class="plain"> name,</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="kw">@</span><span class="classname">RequestParam</span>
+      <span class="plain">(defaultValue = </span><span class="str">"0"</span><span class="plain">)</span>
+      <span class="type"> int</span><span class="plain"> page) {</span>
+    </div>
+    <div class="code-line indent3" style="padding-left:6em">
+      <span class="kw">return</span><span class="plain"> userService.search(name, page);</span>
+    </div>
+    <div class="code-line indent1">}</div>
+    <div class="code-line indent1">&nbsp;</div>
+
+    <div class="code-line indent1"><span class="comment">// ④ POST — create a resource</span></div>
+    <div class="code-line indent1">
+      <span class="kw">@</span><span class="classname tooltip-host" data-tip="tip-map-post">PostMapping</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="kw">public</span>
+      <span class="classname tooltip-host" data-tip="tip-map-re"> ResponseEntity</span>
+      <span class="plain">&lt;</span><span class="classname">User</span><span class="plain">&gt;</span>
+      <span class="plain"> createUser(</span>
+      <span class="kw">@</span><span class="classname tooltip-host" data-tip="tip-map-reqbody">RequestBody</span>
+      <span class="classname"> User</span>
+      <span class="plain"> user) {</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="classname">User</span><span class="plain"> saved = userService.save(user);</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="kw">return</span>
+      <span class="classname"> ResponseEntity</span>
+      <span class="plain">.</span>
+      <span class="method tooltip-host" data-tip="tip-map-status">status</span>
+      <span class="plain">(</span><span class="classname">HttpStatus</span><span class="plain">.CREATED).body(saved);</span>
+    </div>
+    <div class="code-line indent1">}</div>
+    <div class="code-line indent1">&nbsp;</div>
+
+    <div class="code-line indent1"><span class="comment">// ⑤ PUT — full update</span></div>
+    <div class="code-line indent1">
+      <span class="kw">@</span><span class="classname tooltip-host" data-tip="tip-map-put">PutMapping</span>
+      <span class="plain">(</span><span class="str">"/{id}"</span><span class="plain">)</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="kw">public</span>
+      <span class="classname"> User</span>
+      <span class="plain"> updateUser(</span>
+      <span class="kw">@</span><span class="classname">PathVariable</span>
+      <span class="type"> Long</span>
+      <span class="plain"> id,</span>
+      <span class="kw">@</span><span class="classname">RequestBody</span>
+      <span class="classname"> User</span>
+      <span class="plain"> user) {</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="kw">return</span><span class="plain"> userService.update(id, user);</span>
+    </div>
+    <div class="code-line indent1">}</div>
+    <div class="code-line indent1">&nbsp;</div>
+
+    <div class="code-line indent1"><span class="comment">// ⑥ PATCH — partial update</span></div>
+    <div class="code-line indent1">
+      <span class="kw">@</span><span class="classname tooltip-host" data-tip="tip-map-patch">PatchMapping</span>
+      <span class="plain">(</span><span class="str">"/{id}/email"</span><span class="plain">)</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="kw">public</span>
+      <span class="classname"> User</span>
+      <span class="plain"> patchEmail(</span>
+      <span class="kw">@</span><span class="classname">PathVariable</span>
+      <span class="type"> Long</span>
+      <span class="plain"> id,</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="kw">@</span><span class="classname tooltip-host" data-tip="tip-map-reqheader">RequestHeader</span>
+      <span class="plain">(</span><span class="str">"X-New-Email"</span><span class="plain">)</span>
+      <span class="type"> String</span>
+      <span class="plain"> email) {</span>
+    </div>
+    <div class="code-line indent3" style="padding-left:6em">
+      <span class="kw">return</span><span class="plain"> userService.updateEmail(id, email);</span>
+    </div>
+    <div class="code-line indent1">}</div>
+    <div class="code-line indent1">&nbsp;</div>
+
+    <div class="code-line indent1"><span class="comment">// ⑦ DELETE — remove a resource</span></div>
+    <div class="code-line indent1">
+      <span class="kw">@</span><span class="classname tooltip-host" data-tip="tip-map-delete">DeleteMapping</span>
+      <span class="plain">(</span><span class="str">"/{id}"</span><span class="plain">)</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="kw">public</span>
+      <span class="classname"> ResponseEntity</span>
+      <span class="plain">&lt;</span><span class="kw">Void</span><span class="plain">&gt;</span>
+      <span class="plain"> deleteUser(</span>
+      <span class="kw">@</span><span class="classname">PathVariable</span>
+      <span class="type"> Long</span>
+      <span class="plain"> id) {</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="plain">userService.delete(id);</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="kw">return</span>
+      <span class="classname"> ResponseEntity</span>
+      <span class="plain">.</span>
+      <span class="method tooltip-host" data-tip="tip-map-nocontent">noContent</span>
+      <span class="plain">().build();</span>
+    </div>
+    <div class="code-line indent1">}</div>
+    <div class="code-line">}</div>
+  </div>
+
+  <!-- HTTP method quick-reference table -->
+  <div class="modifier-table" style="margin-top:28px;">
+    <div class="mod-row header-row" style="grid-template-columns: 130px 90px 1fr 100px;">
+      <span>Annotation</span><span>HTTP Verb</span><span>Typical Use</span><span>Success Code</span>
+    </div>
+    <div class="mod-row tooltip-host" data-tip="tip-map-get" style="grid-template-columns: 130px 90px 1fr 100px;">
+      <span class="badge def">@GetMapping</span><span style="color:var(--accent2)">GET</span><span style="font-size:.8rem;color:var(--muted)">Retrieve resource(s)</span><span class="tick">200 OK</span>
+    </div>
+    <div class="mod-row tooltip-host" data-tip="tip-map-post" style="grid-template-columns: 130px 90px 1fr 100px;">
+      <span class="badge pub">@PostMapping</span><span style="color:var(--classname)">POST</span><span style="font-size:.8rem;color:var(--muted)">Create a new resource</span><span class="tick">201 Created</span>
+    </div>
+    <div class="mod-row tooltip-host" data-tip="tip-map-put" style="grid-template-columns: 130px 90px 1fr 100px;">
+      <span class="badge prot">@PutMapping</span><span style="color:var(--yellow)">PUT</span><span style="font-size:.8rem;color:var(--muted)">Replace full resource</span><span class="tick">200 OK</span>
+    </div>
+    <div class="mod-row tooltip-host" data-tip="tip-map-patch" style="grid-template-columns: 130px 90px 1fr 100px;">
+      <span class="badge prot">@PatchMapping</span><span style="color:var(--yellow)">PATCH</span><span style="font-size:.8rem;color:var(--muted)">Partial update</span><span class="tick">200 OK</span>
+    </div>
+    <div class="mod-row tooltip-host" data-tip="tip-map-delete" style="grid-template-columns: 130px 90px 1fr 100px;">
+      <span class="badge priv">@DeleteMapping</span><span style="color:var(--accent3)">DELETE</span><span style="font-size:.8rem;color:var(--muted)">Remove a resource</span><span class="tick">204 No Content</span>
+    </div>
+  </div>
+
+  <!-- Tooltips -->
+  <div id="tip-map-get" class="speech-bubble">
+    <strong>@GetMapping</strong><br>
+    Handles HTTP <code>GET</code> requests. Safe and idempotent — calling it multiple times has no side effects.<br>
+    Shorthand for <code>@RequestMapping(method = RequestMethod.GET)</code>.<br>
+    <span class="tip-range">Use for fetching data. Never use GET to modify server state.</span>
+  </div>
+  <div id="tip-map-pathvar" class="speech-bubble">
+    <strong>Path Variable Template ( /{id} )</strong><br>
+    Curly braces define a named placeholder in the URL path.<br>
+    Example: a request to <code>/api/users/42</code> binds <code>42</code> to the <code>id</code> parameter.<br>
+    <span class="tip-range">Multiple variables: <code>"/orders/{orderId}/items/{itemId}"</code></span>
+  </div>
+  <div id="tip-map-pathvarbind" class="speech-bubble">
+    <strong>@PathVariable</strong><br>
+    Extracts the value from the URL path and binds it to the method parameter.<br>
+    The parameter name must match the template variable name, or use <code>@PathVariable("id")</code>.<br>
+    <span class="tip-range">Spring auto-converts to the declared type: <code>Long</code>, <code>int</code>, <code>UUID</code>, etc.</span>
+  </div>
+  <div id="tip-map-reqparam" class="speech-bubble">
+    <strong>@RequestParam</strong><br>
+    Extracts a query parameter from the URL: <code>/search?name=Alice&amp;page=2</code>.<br>
+    <code>required = false</code> makes it optional (defaults to <code>null</code>).<br>
+    <code>defaultValue</code> provides a fallback when the param is absent.<br>
+    <span class="tip-range">For many params, bind them all to a DTO object instead.</span>
+  </div>
+  <div id="tip-map-post" class="speech-bubble">
+    <strong>@PostMapping</strong><br>
+    Handles HTTP <code>POST</code> requests. Used to <em>create</em> a new resource.<br>
+    Not idempotent — calling it twice creates two resources.<br>
+    <span class="tip-range">Convention: return <code>201 Created</code> with the new resource in the body.</span>
+  </div>
+  <div id="tip-map-re" class="speech-bubble">
+    <strong>ResponseEntity&lt;T&gt;</strong><br>
+    Gives full control over the HTTP response: status code, headers, and body.<br>
+    More expressive than returning just the object.<br>
+    <span class="tip-range">Common builders: <code>.ok(body)</code>, <code>.status(201).body(obj)</code>, <code>.notFound().build()</code>, <code>.noContent().build()</code></span>
+  </div>
+  <div id="tip-map-reqbody" class="speech-bubble">
+    <strong>@RequestBody</strong><br>
+    Deserialises the HTTP request body (JSON by default) into a Java object.<br>
+    Jackson library performs the JSON → Java conversion automatically.<br>
+    <span class="tip-range">Add <code>@Valid</code> before it to trigger Bean Validation: <code>@Valid @RequestBody User user</code></span>
+  </div>
+  <div id="tip-map-status" class="speech-bubble">
+    <strong>ResponseEntity.status(HttpStatus)</strong><br>
+    Sets the HTTP status code explicitly. <code>HttpStatus.CREATED</code> = 201.<br>
+    Chain <code>.body(object)</code> to include a response payload.<br>
+    <span class="tip-range">Other common statuses: <code>OK(200)</code>, <code>NOT_FOUND(404)</code>, <code>BAD_REQUEST(400)</code>, <code>NO_CONTENT(204)</code></span>
+  </div>
+  <div id="tip-map-put" class="speech-bubble">
+    <strong>@PutMapping</strong><br>
+    Handles HTTP <code>PUT</code> — replaces the <em>entire</em> resource with the provided data.<br>
+    Idempotent: calling it multiple times with the same data gives the same result.<br>
+    <span class="tip-range">If a field is missing in the body, it should be set to null/default (full replacement).</span>
+  </div>
+  <div id="tip-map-patch" class="speech-bubble">
+    <strong>@PatchMapping</strong><br>
+    Handles HTTP <code>PATCH</code> — updates only the <em>specified fields</em> of a resource.<br>
+    Not idempotent by definition (though implementations can be).<br>
+    <span class="tip-range">Preferred over PUT when you want to update a single field without sending the full object.</span>
+  </div>
+  <div id="tip-map-reqheader" class="speech-bubble">
+    <strong>@RequestHeader</strong><br>
+    Extracts a named HTTP request header and binds it to a method parameter.<br>
+    Throws <code>MissingRequestHeaderException</code> if the header is absent (add <code>required=false</code> to make it optional).<br>
+    <span class="tip-range">Common headers: <code>Authorization</code>, <code>Content-Type</code>, <code>Accept</code>, custom headers like <code>X-Request-ID</code></span>
+  </div>
+  <div id="tip-map-delete" class="speech-bubble">
+    <strong>@DeleteMapping</strong><br>
+    Handles HTTP <code>DELETE</code> — removes the identified resource.<br>
+    Idempotent: deleting an already-deleted resource should return the same result (204 or 404).<br>
+    <span class="tip-range">Convention: return <code>204 No Content</code> with an empty body on success.</span>
+  </div>
+  <div id="tip-map-nocontent" class="speech-bubble">
+    <strong>ResponseEntity.noContent()</strong><br>
+    Builds a <code>204 No Content</code> response — correct for successful DELETE operations.<br>
+    <code>.build()</code> finalises it without a body (body is not needed for 204).<br>
+    <span class="tip-range">Equivalent to: <code>new ResponseEntity&lt;&gt;(HttpStatus.NO_CONTENT)</code></span>
+  </div>
+</div>

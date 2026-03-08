@@ -1,0 +1,204 @@
+<div class="fragment-root">
+  <h2 class="fragment-title">Spring MVC Controller</h2>
+  <p class="fragment-desc">A Spring Controller is a class that handles incoming HTTP requests and returns responses. It sits at the entry point of your web layer, routing requests to the right logic.</p>
+
+  <div class="code-block">
+    <div class="code-line"><span class="kw">import</span><span class="plain"> org.springframework.stereotype.</span><span class="classname">Controller</span><span class="plain">;</span></div>
+    <div class="code-line"><span class="kw">import</span><span class="plain"> org.springframework.web.bind.annotation.</span><span class="classname">RequestMapping</span><span class="plain">;</span></div>
+    <div class="code-line"><span class="kw">import</span><span class="plain"> org.springframework.web.bind.annotation.</span><span class="classname">ResponseBody</span><span class="plain">;</span></div>
+    <div class="code-line"><span class="kw">import</span><span class="plain"> org.springframework.beans.factory.annotation.</span><span class="classname">Autowired</span><span class="plain">;</span></div>
+    <div class="code-line"><span class="kw">import</span><span class="plain"> org.springframework.ui.</span><span class="classname">Model</span><span class="plain">;</span></div>
+    <div class="code-line">&nbsp;</div>
+
+    <div class="code-line">
+      <span class="kw">@</span><span class="classname tooltip-host" data-tip="tip-ctrl-annotation">Controller</span>
+    </div>
+    <div class="code-line">
+      <span class="kw">@</span><span class="classname tooltip-host" data-tip="tip-ctrl-reqmap">RequestMapping</span>
+      <span class="plain">(</span><span class="str">"/products"</span><span class="plain">)</span>
+    </div>
+    <div class="code-line">
+      <span class="kw">public class</span>
+      <span class="classname tooltip-host" data-tip="tip-ctrl-class"> ProductController</span>
+      <span class="plain"> {</span>
+    </div>
+    <div class="code-line indent1">&nbsp;</div>
+
+    <div class="code-line indent1"><span class="comment">// ① Dependency injection via constructor (preferred)</span></div>
+    <div class="code-line indent1">
+      <span class="kw">private final</span>
+      <span class="classname"> ProductService</span>
+      <span class="plain"> productService;</span>
+    </div>
+    <div class="code-line indent1">&nbsp;</div>
+    <div class="code-line indent1">
+      <span class="kw">@</span><span class="classname tooltip-host" data-tip="tip-ctrl-autowired">Autowired</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="kw">public</span>
+      <span class="classname"> ProductController</span>
+      <span class="plain">(</span><span class="classname">ProductService</span><span class="plain"> productService) {</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="kw">this</span><span class="plain">.productService = productService;</span>
+    </div>
+    <div class="code-line indent1">}</div>
+    <div class="code-line indent1">&nbsp;</div>
+
+    <div class="code-line indent1"><span class="comment">// ② Return a view name (Thymeleaf / JSP template)</span></div>
+    <div class="code-line indent1">
+      <span class="kw">@</span><span class="classname">RequestMapping</span><span class="plain">(</span><span class="str">"/list"</span><span class="plain">)</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="kw">public</span>
+      <span class="type tooltip-host" data-tip="tip-ctrl-string-return"> String</span>
+      <span class="plain"> listProducts(</span>
+      <span class="classname tooltip-host" data-tip="tip-ctrl-model">Model</span>
+      <span class="plain"> model) {</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="plain">model.addAttribute(</span><span class="str">"products"</span>
+      <span class="plain">, productService.findAll());</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="kw">return</span>
+      <span class="str tooltip-host" data-tip="tip-ctrl-viewname"> "products/list"</span>
+      <span class="plain">;</span>
+    </div>
+    <div class="code-line indent1">}</div>
+    <div class="code-line indent1">&nbsp;</div>
+
+    <div class="code-line indent1"><span class="comment">// ③ Write directly to HTTP response body</span></div>
+    <div class="code-line indent1">
+      <span class="kw">@</span><span class="classname tooltip-host" data-tip="tip-ctrl-responsebody">ResponseBody</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="kw">@</span><span class="classname">RequestMapping</span><span class="plain">(</span><span class="str">"/count"</span><span class="plain">)</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="kw">public</span>
+      <span class="type"> String</span>
+      <span class="plain"> count() {</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="kw">return</span>
+      <span class="str"> "Total: "</span>
+      <span class="plain"> + productService.count();</span>
+    </div>
+    <div class="code-line indent1">}</div>
+    <div class="code-line indent1">&nbsp;</div>
+
+    <div class="code-line indent1"><span class="comment">// ④ Handle exceptions in this controller</span></div>
+    <div class="code-line indent1">
+      <span class="kw">@</span><span class="classname tooltip-host" data-tip="tip-ctrl-exhandler">ExceptionHandler</span>
+      <span class="plain">(</span><span class="classname">ProductNotFoundException</span><span class="plain">.class)</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="kw">@</span><span class="classname">ResponseBody</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="kw">public</span>
+      <span class="type"> String</span>
+      <span class="plain"> handleNotFound(</span>
+      <span class="classname">ProductNotFoundException</span>
+      <span class="plain"> ex) {</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="kw">return</span>
+      <span class="str"> "Error: "</span>
+      <span class="plain"> + ex.getMessage();</span>
+    </div>
+    <div class="code-line indent1">}</div>
+    <div class="code-line">}</div>
+  </div>
+
+  <!-- Rest Controller variant -->
+  <div style="margin-top:28px;">
+    <p class="fragment-desc" style="margin-bottom:14px;">
+      <strong style="color:var(--accent)">@RestController</strong> — the modern shortcut that combines <code>@Controller + @ResponseBody</code> on every method. Use this for REST APIs.
+    </p>
+  </div>
+  <div class="code-block">
+    <div class="code-line">
+      <span class="kw">@</span><span class="classname tooltip-host" data-tip="tip-ctrl-restctrl">RestController</span>
+    </div>
+    <div class="code-line">
+      <span class="kw">@</span><span class="classname">RequestMapping</span>
+      <span class="plain">(</span><span class="str">"/api/products"</span><span class="plain">)</span>
+    </div>
+    <div class="code-line">
+      <span class="kw">public class</span>
+      <span class="classname"> ProductApiController</span>
+      <span class="plain"> {</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="comment">// Every method automatically writes JSON to the response body</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="comment">// No need for @ResponseBody on each method</span>
+    </div>
+    <div class="code-line">}</div>
+  </div>
+
+  <!-- Tooltips -->
+  <div id="tip-ctrl-annotation" class="speech-bubble">
+    <strong>@Controller</strong><br>
+    Marks this class as a Spring MVC controller — a <em>stereotype annotation</em>.<br>
+    Spring automatically detects it during component scanning and registers it as a bean.<br>
+    <span class="tip-range">Use <code>@RestController</code> for REST APIs — it adds <code>@ResponseBody</code> to every method.</span>
+  </div>
+  <div id="tip-ctrl-reqmap" class="speech-bubble">
+    <strong>@RequestMapping at class level</strong><br>
+    Sets a <em>base URL prefix</em> for all methods in this controller.<br>
+    Here, every method URL starts with <code>/products</code>.<br>
+    <span class="tip-range">Method-level mappings are appended: <code>/products</code> + <code>/list</code> = <code>/products/list</code></span>
+  </div>
+  <div id="tip-ctrl-class" class="speech-bubble">
+    <strong>Controller class naming</strong><br>
+    Convention: name ends with <code>Controller</code>, matches the resource it manages.<br>
+    One controller per resource type keeps code organised and focused.<br>
+    <span class="tip-range">Place in a <code>controller</code> or <code>web</code> package alongside service and repository layers.</span>
+  </div>
+  <div id="tip-ctrl-autowired" class="speech-bubble">
+    <strong>@Autowired (constructor injection)</strong><br>
+    Tells Spring to inject a <code>ProductService</code> bean when creating this controller.<br>
+    Constructor injection is preferred over field injection — it makes dependencies explicit and testable.<br>
+    <span class="tip-range">If there's only one constructor, <code>@Autowired</code> is optional in Spring 4.3+.</span>
+  </div>
+  <div id="tip-ctrl-string-return" class="speech-bubble">
+    <strong>Returning a String (View Name)</strong><br>
+    When a method returns a <code>String</code> (without <code>@ResponseBody</code>), Spring treats it as a <em>view name</em>.<br>
+    A <code>ViewResolver</code> (e.g. Thymeleaf) resolves it to an actual template file.<br>
+    <span class="tip-range">Return <code>"redirect:/path"</code> or <code>"forward:/path"</code> for redirects.</span>
+  </div>
+  <div id="tip-ctrl-model" class="speech-bubble">
+    <strong>Model</strong><br>
+    A map-like container that carries data from the controller to the view template.<br>
+    <code>model.addAttribute("key", value)</code> makes data available in the template as <code>${key}</code>.<br>
+    <span class="tip-range">Spring automatically injects <code>Model</code> when declared as a method parameter.</span>
+  </div>
+  <div id="tip-ctrl-viewname" class="speech-bubble">
+    <strong>View Name String</strong><br>
+    This resolves to a template file at <code>src/main/resources/templates/products/list.html</code> (Thymeleaf).<br>
+    The prefix/suffix are configured in <code>application.properties</code>.<br>
+    <span class="tip-range">Default Thymeleaf: prefix = <code>classpath:/templates/</code>, suffix = <code>.html</code></span>
+  </div>
+  <div id="tip-ctrl-responsebody" class="speech-bubble">
+    <strong>@ResponseBody</strong><br>
+    Tells Spring to write the return value <em>directly</em> into the HTTP response body — no view resolution.<br>
+    Combined with Jackson on the classpath, objects are automatically serialised to JSON.<br>
+    <span class="tip-range">Eliminates the need for <code>@ResponseBody</code> on every method when using <code>@RestController</code>.</span>
+  </div>
+  <div id="tip-ctrl-exhandler" class="speech-bubble">
+    <strong>@ExceptionHandler</strong><br>
+    Catches a specific exception thrown by any method <em>in this controller</em>.<br>
+    Returns a custom error response instead of a 500 page.<br>
+    <span class="tip-range">For global exception handling across all controllers, use <code>@ControllerAdvice</code>.</span>
+  </div>
+  <div id="tip-ctrl-restctrl" class="speech-bubble">
+    <strong>@RestController</strong><br>
+    A convenience annotation = <code>@Controller</code> + <code>@ResponseBody</code> on the class.<br>
+    Every method's return value is written to the HTTP response as JSON (or XML).<br>
+    <span class="tip-range">The standard choice for building REST APIs in Spring Boot.</span>
+  </div>
+</div>

@@ -1,0 +1,127 @@
+<div class="fragment-root">
+  <h2 class="fragment-title">Reference Data Types in Java</h2>
+  <p class="fragment-desc">Reference types store a <em>memory address</em> pointing to an object — not the value itself.</p>
+
+  <div class="code-block">
+    <div class="code-line">
+      <span class="kw">public</span>
+      <span class="plain"> class ReferenceDemo {</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="kw">public static void</span>
+      <span class="plain"> main(String[] args) {</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="comment">// String — most used reference type</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="type tooltip-host" data-tip="tip-string">String</span>
+      <span class="plain"> name = </span>
+      <span class="str">"Java"</span>
+      <span class="plain">;</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="type">String</span>
+      <span class="plain"> greeting = name.</span>
+      <span class="method tooltip-host" data-tip="tip-concat">concat</span>
+      <span class="plain">(</span>
+      <span class="str">" is great"</span>
+      <span class="plain">);</span>
+    </div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2">
+      <span class="comment">// Arrays — fixed-size collections</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="type tooltip-host" data-tip="tip-array">int[]</span>
+      <span class="plain"> scores = { </span>
+      <span class="num">95</span>
+      <span class="plain">, </span>
+      <span class="num">87</span>
+      <span class="plain">, </span>
+      <span class="num">76</span>
+      <span class="plain"> };</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="type">String[]</span>
+      <span class="plain"> fruits = </span>
+      <span class="kw tooltip-host" data-tip="tip-new">new</span>
+      <span class="plain"> String[</span>
+      <span class="num">3</span>
+      <span class="plain">];</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="plain">fruits[</span>
+      <span class="num">0</span>
+      <span class="plain">] = </span>
+      <span class="str">"Apple"</span>
+      <span class="plain">;</span>
+    </div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2">
+      <span class="comment">// null — the absence of a reference</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="type">String</span>
+      <span class="plain"> empty = </span>
+      <span class="kw tooltip-host" data-tip="tip-null">null</span>
+      <span class="plain">;</span>
+    </div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2">
+      <span class="comment">// Wrapper classes — objects wrapping primitives</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="type tooltip-host" data-tip="tip-wrapper">Integer</span>
+      <span class="plain"> boxed = </span>
+      <span class="num">42</span>
+      <span class="plain">;</span>
+      <span class="comment"> // autoboxing</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="type">int</span>
+      <span class="plain"> unboxed = boxed;</span>
+      <span class="comment"> // auto-unboxing</span>
+    </div>
+    <div class="code-line indent1">}</div>
+    <div class="code-line">}</div>
+  </div>
+
+  <!-- Tooltips -->
+  <div id="tip-string" class="speech-bubble">
+    <strong>String</strong><br>
+    Not a primitive! Strings are <em>objects</em> in Java, instances of <code>java.lang.String</code>.<br>
+    They are <strong>immutable</strong> — once created, the value cannot change.<br>
+    <span class="tip-range">Use <code>StringBuilder</code> for heavy concatenation.</span>
+  </div>
+  <div id="tip-concat" class="speech-bubble">
+    <strong>.concat()</strong> method<br>
+    Joins two strings together and returns a <em>new</em> String.<br>
+    Since Strings are immutable, the original <code>name</code> is unchanged.<br>
+    <span class="tip-range">Equivalent to: <code>name + " is great"</code></span>
+  </div>
+  <div id="tip-array" class="speech-bubble">
+    <strong>Array type ( int[] )</strong><br>
+    Arrays are reference types, even when holding primitives.<br>
+    Fixed in size — once created, length cannot change.<br>
+    <span class="tip-range">Access elements with <code>arr[index]</code> (zero-based)</span>
+  </div>
+  <div id="tip-new" class="speech-bubble">
+    <strong>new</strong> keyword<br>
+    Allocates memory on the <em>heap</em> and creates a new object instance.<br>
+    The variable holds a <em>reference</em> (address) to that memory.<br>
+    <span class="tip-range">Triggers the object's constructor.</span>
+  </div>
+  <div id="tip-null" class="speech-bubble">
+    <strong>null</strong><br>
+    Represents the absence of any object reference.<br>
+    Calling a method on a <code>null</code> reference throws a <strong>NullPointerException</strong>!<br>
+    <span class="tip-range">Always check: <code>if (obj != null)</code></span>
+  </div>
+  <div id="tip-wrapper" class="speech-bubble">
+    <strong>Wrapper Classes</strong><br>
+    Every primitive has an object equivalent: <code>int → Integer</code>, <code>double → Double</code>, etc.<br>
+    Java auto-converts between them (<em>autoboxing / unboxing</em>).<br>
+    <span class="tip-range">Required when using collections like <code>List&lt;Integer&gt;</code></span>
+  </div>
+</div>

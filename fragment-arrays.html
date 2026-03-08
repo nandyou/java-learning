@@ -1,0 +1,110 @@
+<div class="fragment-root">
+  <h2 class="fragment-title">Java Arrays</h2>
+  <p class="fragment-desc">Arrays store a <em>fixed-size</em> ordered collection of elements of the same type. Indices start at <strong>0</strong>.</p>
+
+  <div class="code-block">
+    <div class="code-line"><span class="kw">public class</span><span class="classname"> ArrayDemo</span><span class="plain"> {</span></div>
+    <div class="code-line indent1"><span class="kw">public static void</span><span class="plain"> main(String[] args) {</span></div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ① Declare and initialise with literal values</span></div>
+    <div class="code-line indent2">
+      <span class="type tooltip-host" data-tip="tip-arr-decl">int[]</span>
+      <span class="plain"> scores = { </span><span class="num">90</span><span class="plain">, </span><span class="num">85</span><span class="plain">, </span><span class="num">78</span><span class="plain">, </span><span class="num">92</span><span class="plain">, </span><span class="num">88</span><span class="plain"> };</span>
+    </div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ② Declare with 'new' and set values later</span></div>
+    <div class="code-line indent2">
+      <span class="type">String[]</span><span class="plain"> names = </span>
+      <span class="kw tooltip-host" data-tip="tip-arr-new">new</span>
+      <span class="type"> String</span><span class="plain">[</span><span class="num">3</span><span class="plain">];</span>
+    </div>
+    <div class="code-line indent2"><span class="plain">names[</span><span class="num">0</span><span class="plain">] = </span><span class="str">"Alice"</span><span class="plain">;</span></div>
+    <div class="code-line indent2"><span class="plain">names[</span><span class="num">1</span><span class="plain">] = </span><span class="str">"Bob"</span><span class="plain">;</span></div>
+    <div class="code-line indent2"><span class="plain">names[</span><span class="num">2</span><span class="plain">] = </span><span class="str">"Carol"</span><span class="plain">;</span></div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ③ Access by index</span></div>
+    <div class="code-line indent2">
+      <span class="type">int</span><span class="plain"> first = scores[</span>
+      <span class="num tooltip-host" data-tip="tip-arr-index">0</span>
+      <span class="plain">];</span><span class="comment">  // 90</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="type">int</span><span class="plain"> last  = scores[scores.</span>
+      <span class="method tooltip-host" data-tip="tip-arr-length">length</span>
+      <span class="plain"> - </span><span class="num">1</span><span class="plain">];</span><span class="comment">  // 88</span>
+    </div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ④ Iterate with for-each</span></div>
+    <div class="code-line indent2">
+      <span class="kw">for</span><span class="plain"> (</span>
+      <span class="type tooltip-host" data-tip="tip-arr-foreach">int</span>
+      <span class="plain"> s : scores) {</span>
+    </div>
+    <div class="code-line indent3" style="padding-left:6em">
+      <span class="plain">System.out.println(s);</span>
+    </div>
+    <div class="code-line indent2">}</div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ⑤ 2D array</span></div>
+    <div class="code-line indent2">
+      <span class="type tooltip-host" data-tip="tip-arr-2d">int[][]</span>
+      <span class="plain"> matrix = { {</span><span class="num">1</span><span class="plain">,</span><span class="num">2</span><span class="plain">}, {</span><span class="num">3</span><span class="plain">,</span><span class="num">4</span><span class="plain">}, {</span><span class="num">5</span><span class="plain">,</span><span class="num">6</span><span class="plain">} };</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="type">int</span><span class="plain"> cell = matrix[</span><span class="num">1</span><span class="plain">][</span><span class="num">0</span><span class="plain">];</span><span class="comment">  // 3 (row 1, col 0)</span>
+    </div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ⑥ Useful utility</span></div>
+    <div class="code-line indent2">
+      <span class="kw">import</span><span class="plain"> java.util.</span>
+      <span class="classname tooltip-host" data-tip="tip-arr-sort">Arrays</span><span class="plain">;</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="plain">Arrays.sort(scores);</span><span class="comment">  // sorts in-place ascending</span>
+    </div>
+    <div class="code-line indent1">}</div>
+    <div class="code-line">}</div>
+  </div>
+
+  <div id="tip-arr-decl" class="speech-bubble">
+    <strong>Array Declaration ( int[] )</strong><br>
+    The <code>[]</code> after the type signals this variable holds an array.<br>
+    You can also write <code>int scores[]</code> but <code>int[] scores</code> is preferred style.<br>
+    <span class="tip-range">All elements must be the same type.</span>
+  </div>
+  <div id="tip-arr-new" class="speech-bubble">
+    <strong>new String[3]</strong><br>
+    Allocates space for exactly 3 String references on the heap.<br>
+    Slots default to <code>null</code> until you assign values.<br>
+    <span class="tip-range">Size is fixed at creation — you cannot resize an array.</span>
+  </div>
+  <div id="tip-arr-index" class="speech-bubble">
+    <strong>Zero-based Indexing</strong><br>
+    The first element is at index <code>0</code>, last at <code>length - 1</code>.<br>
+    Accessing <code>scores[5]</code> on a 5-element array throws <strong>ArrayIndexOutOfBoundsException</strong>!<br>
+    <span class="tip-range">Always validate index before access in dynamic code.</span>
+  </div>
+  <div id="tip-arr-length" class="speech-bubble">
+    <strong>.length</strong> property<br>
+    Returns the number of elements. Note: it is a <em>field</em>, not a method — no parentheses.<br>
+    <span class="tip-range">Compare with String's <code>.length()</code> which IS a method call.</span>
+  </div>
+  <div id="tip-arr-foreach" class="speech-bubble">
+    <strong>Enhanced for-each loop</strong><br>
+    Iterates over every element automatically — no index management.<br>
+    The loop variable <code>s</code> gets a copy of each element in turn.<br>
+    <span class="tip-range">Cannot modify original elements when using for-each on primitives.</span>
+  </div>
+  <div id="tip-arr-2d" class="speech-bubble">
+    <strong>2D Array ( int[][] )</strong><br>
+    An array of arrays — think of it as a grid of rows and columns.<br>
+    Access with two indices: <code>matrix[row][col]</code>.<br>
+    <span class="tip-range">Rows can have different lengths (jagged arrays).</span>
+  </div>
+  <div id="tip-arr-sort" class="speech-bubble">
+    <strong>Arrays utility class</strong><br>
+    <code>java.util.Arrays</code> provides helpful static methods:<br>
+    <code>sort()</code>, <code>binarySearch()</code>, <code>copyOf()</code>, <code>fill()</code>, <code>toString()</code><br>
+    <span class="tip-range">Use <code>Arrays.toString(arr)</code> to print array contents.</span>
+  </div>
+</div>

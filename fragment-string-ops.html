@@ -1,0 +1,192 @@
+<div class="fragment-root">
+  <h2 class="fragment-title">String Operations</h2>
+  <p class="fragment-desc">Strings in Java are <em>immutable</em> objects with a rich API. Every operation returns a <strong>new</strong> String — the original is never changed.</p>
+
+  <div class="code-block">
+    <div class="code-line"><span class="kw">public class</span><span class="classname"> StringDemo</span><span class="plain"> {</span></div>
+    <div class="code-line indent1"><span class="kw">public static void</span><span class="plain"> main(String[] args) {</span></div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="type">String</span><span class="plain"> s = </span><span class="str">"Hello, Java World!"</span><span class="plain">;</span></div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ① Length and character access</span></div>
+    <div class="code-line indent2">
+      <span class="type">int</span><span class="plain">  len  = s.</span>
+      <span class="method tooltip-host" data-tip="tip-str-length">length</span>
+      <span class="plain">();</span><span class="comment">          // 18</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="type">char</span><span class="plain"> ch   = s.</span>
+      <span class="method tooltip-host" data-tip="tip-str-charat">charAt</span>
+      <span class="plain">(</span><span class="num">7</span><span class="plain">);</span><span class="comment">         // 'J'</span>
+    </div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ② Searching</span></div>
+    <div class="code-line indent2">
+      <span class="type">int</span><span class="plain">  idx  = s.</span>
+      <span class="method tooltip-host" data-tip="tip-str-indexof">indexOf</span>
+      <span class="plain">(</span><span class="str">"Java"</span><span class="plain">);</span><span class="comment">     // 7</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="type">boolean</span><span class="plain"> has = s.</span>
+      <span class="method tooltip-host" data-tip="tip-str-contains">contains</span>
+      <span class="plain">(</span><span class="str">"World"</span><span class="plain">);</span><span class="comment">  // true</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="type">boolean</span><span class="plain"> sw  = s.</span>
+      <span class="method tooltip-host" data-tip="tip-str-starts">startsWith</span>
+      <span class="plain">(</span><span class="str">"Hello"</span><span class="plain">);</span><span class="comment"> // true</span>
+    </div>
+    <div class="code-line indent2"><span class="type">boolean</span><span class="plain"> ew  = s.endsWith(</span><span class="str">"!"</span><span class="plain">);</span><span class="comment">       // true</span></div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ③ Extracting parts</span></div>
+    <div class="code-line indent2">
+      <span class="type">String</span><span class="plain"> sub = s.</span>
+      <span class="method tooltip-host" data-tip="tip-str-sub">substring</span>
+      <span class="plain">(</span><span class="num">7</span><span class="plain">, </span><span class="num">11</span><span class="plain">);</span><span class="comment">  // "Java"</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="type">String[]</span><span class="plain"> parts = s.</span>
+      <span class="method tooltip-host" data-tip="tip-str-split">split</span>
+      <span class="plain">(</span><span class="str">", "</span><span class="plain">);</span><span class="comment">  // ["Hello", "Java World!"]</span>
+    </div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ④ Transforming</span></div>
+    <div class="code-line indent2">
+      <span class="type">String</span><span class="plain"> up  = s.</span>
+      <span class="method tooltip-host" data-tip="tip-str-case">toUpperCase</span>
+      <span class="plain">();</span>
+    </div>
+    <div class="code-line indent2"><span class="type">String</span><span class="plain"> low = s.toLowerCase();</span></div>
+    <div class="code-line indent2">
+      <span class="type">String</span><span class="plain"> tr  = </span>
+      <span class="str">"  hello  "</span>
+      <span class="plain">.</span>
+      <span class="method tooltip-host" data-tip="tip-str-trim">strip</span>
+      <span class="plain">();</span><span class="comment">  // "hello"</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="type">String</span><span class="plain"> rep = s.</span>
+      <span class="method tooltip-host" data-tip="tip-str-replace">replace</span>
+      <span class="plain">(</span><span class="str">"Java"</span><span class="plain">, </span><span class="str">"Python"</span><span class="plain">);</span>
+    </div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ⑤ Comparison — never use == for Strings!</span></div>
+    <div class="code-line indent2">
+      <span class="type">String</span><span class="plain"> a = </span><span class="str">"hello"</span><span class="plain">;</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="type">String</span><span class="plain"> b = </span><span class="kw">new</span><span class="plain"> </span><span class="type">String</span><span class="plain">(</span><span class="str">"hello"</span><span class="plain">);</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="type">boolean</span><span class="plain"> eq1 = a.</span>
+      <span class="method tooltip-host" data-tip="tip-str-equals">equals</span>
+      <span class="plain">(b);</span><span class="comment">           // true  ✓</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="type">boolean</span><span class="plain"> eq2 = a </span>
+      <span class="method tooltip-host" data-tip="tip-str-eq">==</span>
+      <span class="plain"> b;</span><span class="comment">                // false ✗</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="type">boolean</span><span class="plain"> ic  = a.</span>
+      <span class="method tooltip-host" data-tip="tip-str-icase">equalsIgnoreCase</span>
+      <span class="plain">(</span><span class="str">"HELLO"</span><span class="plain">);</span><span class="comment">  // true</span>
+    </div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2"><span class="comment">// ⑥ Building strings efficiently</span></div>
+    <div class="code-line indent2">
+      <span class="classname tooltip-host" data-tip="tip-str-sb">StringBuilder</span>
+      <span class="plain"> sb = </span><span class="kw">new</span><span class="plain"> </span><span class="classname">StringBuilder</span><span class="plain">();</span>
+    </div>
+    <div class="code-line indent2"><span class="plain">sb.append(</span><span class="str">"Hello"</span><span class="plain">).append(</span><span class="str">" "</span><span class="plain">).append(</span><span class="str">"World"</span><span class="plain">);</span></div>
+    <div class="code-line indent2"><span class="type">String</span><span class="plain"> result = sb.toString();</span></div>
+    <div class="code-line indent1">}</div>
+    <div class="code-line">}</div>
+  </div>
+
+  <div id="tip-str-length" class="speech-bubble">
+    <strong>.length()</strong><br>
+    Returns the number of characters in the string. It's a <em>method call</em> (with parentheses).<br>
+    Don't confuse with arrays where <code>.length</code> is a field (no parentheses).<br>
+    <span class="tip-range">An empty string <code>""</code> has length 0, not null.</span>
+  </div>
+  <div id="tip-str-charat" class="speech-bubble">
+    <strong>.charAt(index)</strong><br>
+    Returns the character at the given index. Zero-based.<br>
+    Returns a primitive <code>char</code>, not a String.<br>
+    <span class="tip-range">Throws <code>StringIndexOutOfBoundsException</code> for invalid index.</span>
+  </div>
+  <div id="tip-str-indexof" class="speech-bubble">
+    <strong>.indexOf(str)</strong><br>
+    Returns the starting index of the first occurrence of the given substring.<br>
+    Returns <code>-1</code> if not found — always check for -1 before using the result!<br>
+    <span class="tip-range">Use <code>.lastIndexOf()</code> to find the <em>last</em> occurrence.</span>
+  </div>
+  <div id="tip-str-contains" class="speech-bubble">
+    <strong>.contains(str)</strong><br>
+    Returns <code>true</code> if the string contains the given sequence anywhere.<br>
+    Cleaner than <code>indexOf() != -1</code> when you just need a yes/no answer.<br>
+    <span class="tip-range">Case-sensitive — "world" won't match "World".</span>
+  </div>
+  <div id="tip-str-starts" class="speech-bubble">
+    <strong>.startsWith() / .endsWith()</strong><br>
+    Check if the string begins or ends with a given prefix or suffix.<br>
+    Very useful for file extension checks: <code>filename.endsWith(".pdf")</code>.<br>
+    <span class="tip-range">Both are case-sensitive. Use <code>.toLowerCase()</code> first for case-insensitive check.</span>
+  </div>
+  <div id="tip-str-sub" class="speech-bubble">
+    <strong>.substring(start, end)</strong><br>
+    Extracts characters from index <code>start</code> (inclusive) to <code>end</code> (exclusive).<br>
+    <code>"Hello".substring(1, 4)</code> → <code>"ell"</code><br>
+    <span class="tip-range">Omit <code>end</code> to go to the end of the string: <code>s.substring(7)</code></span>
+  </div>
+  <div id="tip-str-split" class="speech-bubble">
+    <strong>.split(regex)</strong><br>
+    Splits the string by the given delimiter, returning a <code>String[]</code>.<br>
+    The delimiter is a <em>regular expression</em> — escape special chars: <code>split("\\.")</code> for dots.<br>
+    <span class="tip-range">Use <code>String.join(", ", array)</code> to reverse the split.</span>
+  </div>
+  <div id="tip-str-case" class="speech-bubble">
+    <strong>.toUpperCase() / .toLowerCase()</strong><br>
+    Returns a new string with all characters converted. The original is unchanged.<br>
+    Best practice: always use the locale-aware version for user-facing text.<br>
+    <span class="tip-range"><code>toUpperCase(Locale.ROOT)</code> for consistent behaviour across regions.</span>
+  </div>
+  <div id="tip-str-trim" class="speech-bubble">
+    <strong>.strip() vs .trim()</strong><br>
+    Both remove leading and trailing whitespace. <code>strip()</code> is preferred (Java 11+).<br>
+    <code>strip()</code> correctly handles Unicode whitespace; <code>trim()</code> only handles ASCII ≤ 32.<br>
+    <span class="tip-range">Also see: <code>stripLeading()</code> and <code>stripTrailing()</code>.</span>
+  </div>
+  <div id="tip-str-replace" class="speech-bubble">
+    <strong>.replace(old, new)</strong><br>
+    Replaces <em>all</em> occurrences of <code>old</code> with <code>new</code>. Returns a new String.<br>
+    For pattern-based replacement use <code>.replaceAll(regex, replacement)</code>.<br>
+    <span class="tip-range">Since strings are immutable, you must capture the returned value.</span>
+  </div>
+  <div id="tip-str-equals" class="speech-bubble">
+    <strong>.equals(other)</strong><br>
+    Compares <em>content</em> character by character. This is the correct way to compare strings.<br>
+    Defined in the String class to compare values, not memory addresses.<br>
+    <span class="tip-range">If <code>other</code> could be null, use <code>Objects.equals(a, b)</code> to avoid NullPointerException.</span>
+  </div>
+  <div id="tip-str-eq" class="speech-bubble">
+    <strong>== on Strings — DON'T!</strong><br>
+    <code>==</code> compares <em>object references</em> (memory addresses), not content.<br>
+    Two separate String objects with the same text will return <code>false</code> with <code>==</code>.<br>
+    <span class="tip-range">It may accidentally return <code>true</code> for string literals (due to interning) — never rely on this!</span>
+  </div>
+  <div id="tip-str-icase" class="speech-bubble">
+    <strong>.equalsIgnoreCase()</strong><br>
+    Compares content while ignoring upper/lowercase differences.<br>
+    <code>"Java".equalsIgnoreCase("JAVA")</code> → <code>true</code><br>
+    <span class="tip-range">Ideal for user input comparison where casing shouldn't matter.</span>
+  </div>
+  <div id="tip-str-sb" class="speech-bubble">
+    <strong>StringBuilder</strong><br>
+    A <em>mutable</em> string buffer for efficient building of long strings in loops.<br>
+    Each <code>+</code> on a regular String creates a new object — slow in loops!<br>
+    <code>StringBuilder</code> modifies in-place, then call <code>.toString()</code> at the end.<br>
+    <span class="tip-range">Use <code>StringBuffer</code> instead if you need thread-safety.</span>
+  </div>
+</div>

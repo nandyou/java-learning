@@ -1,0 +1,337 @@
+<div class="fragment-root">
+  <h2 class="fragment-title">Spring ResourceLoader</h2>
+  <p class="fragment-desc"><code>ResourceLoader</code> is Spring's unified API for loading files from any location — classpath, filesystem, URLs, or servlet context — using a simple string prefix.</p>
+
+  <!-- ── SECTION 1: Core concept ── -->
+  <div class="code-block">
+    <div class="code-line"><span class="kw">import</span><span class="plain"> org.springframework.core.io.</span><span class="classname tooltip-host" data-tip="tip-rl-resource">Resource</span><span class="plain">;</span></div>
+    <div class="code-line"><span class="kw">import</span><span class="plain"> org.springframework.core.io.</span><span class="classname tooltip-host" data-tip="tip-rl-loader">ResourceLoader</span><span class="plain">;</span></div>
+    <div class="code-line"><span class="kw">import</span><span class="plain"> org.springframework.stereotype.</span><span class="classname">Service</span><span class="plain">;</span></div>
+    <div class="code-line"><span class="kw">import</span><span class="plain"> org.springframework.beans.factory.annotation.</span><span class="classname">Autowired</span><span class="plain">;</span></div>
+    <div class="code-line"><span class="kw">import</span><span class="plain"> java.io.*;</span></div>
+    <div class="code-line"><span class="kw">import</span><span class="plain"> java.nio.charset.</span><span class="classname">StandardCharsets</span><span class="plain">;</span></div>
+    <div class="code-line"><span class="kw">import</span><span class="plain"> java.nio.file.</span><span class="classname">Files</span><span class="plain">;</span></div>
+    <div class="code-line">&nbsp;</div>
+
+    <div class="code-line"><span class="kw">@</span><span class="classname">Service</span></div>
+    <div class="code-line"><span class="kw">public class</span><span class="classname"> FileReaderService</span><span class="plain"> {</span></div>
+    <div class="code-line indent1">&nbsp;</div>
+
+    <div class="code-line indent1">
+      <span class="kw">private final</span>
+      <span class="classname"> ResourceLoader</span>
+      <span class="plain"> resourceLoader;</span>
+    </div>
+    <div class="code-line indent1">&nbsp;</div>
+    <div class="code-line indent1">
+      <span class="kw">@</span><span class="classname">Autowired</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="kw">public</span>
+      <span class="classname"> FileReaderService</span>
+      <span class="plain">(</span><span class="classname">ResourceLoader</span><span class="plain"> resourceLoader) {</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="kw">this</span><span class="plain">.resourceLoader = resourceLoader;</span>
+    </div>
+    <div class="code-line indent1">}</div>
+    <div class="code-line indent1">&nbsp;</div>
+
+    <div class="code-line indent1"><span class="comment">// ① Read from classpath (inside the JAR / resources folder)</span></div>
+    <div class="code-line indent1">
+      <span class="kw">public</span>
+      <span class="type"> String</span>
+      <span class="plain"> readFromClasspath(</span><span class="type">String</span><span class="plain"> filename)</span>
+      <span class="kw"> throws</span>
+      <span class="classname"> IOException</span>
+      <span class="plain"> {</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="classname"> Resource</span>
+      <span class="plain"> resource = resourceLoader.getResource(</span>
+    </div>
+    <div class="code-line indent3" style="padding-left:6em">
+      <span class="str tooltip-host" data-tip="tip-rl-classpathprefix">"classpath:"</span>
+      <span class="plain"> + filename);</span>
+    </div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2">
+      <span class="kw">try</span><span class="plain"> (</span>
+      <span class="classname tooltip-host" data-tip="tip-rl-inputstream">InputStream</span>
+      <span class="plain"> is = resource.</span>
+      <span class="method tooltip-host" data-tip="tip-rl-getinputstream">getInputStream</span>
+      <span class="plain">()) {</span>
+    </div>
+    <div class="code-line indent3" style="padding-left:6em">
+      <span class="kw">return</span>
+      <span class="kw"> new</span>
+      <span class="classname"> String</span>
+      <span class="plain">(is.readAllBytes(),</span>
+      <span class="classname"> StandardCharsets</span><span class="plain">.UTF_8);</span>
+    </div>
+    <div class="code-line indent2">}</div>
+    <div class="code-line indent1">}</div>
+    <div class="code-line indent1">&nbsp;</div>
+
+    <div class="code-line indent1"><span class="comment">// ② Read from external filesystem path</span></div>
+    <div class="code-line indent1">
+      <span class="kw">public</span>
+      <span class="type"> String</span>
+      <span class="plain"> readFromFilesystem(</span><span class="type">String</span><span class="plain"> absolutePath)</span>
+      <span class="kw"> throws</span>
+      <span class="classname"> IOException</span>
+      <span class="plain"> {</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="classname"> Resource</span>
+      <span class="plain"> resource = resourceLoader.getResource(</span>
+    </div>
+    <div class="code-line indent3" style="padding-left:6em">
+      <span class="str tooltip-host" data-tip="tip-rl-fileprefix">"file:"</span>
+      <span class="plain"> + absolutePath);</span>
+    </div>
+    <div class="code-line indent2">&nbsp;</div>
+    <div class="code-line indent2">
+      <span class="kw">return</span>
+      <span class="classname"> Files</span>
+      <span class="plain">.readString(resource.</span>
+      <span class="method tooltip-host" data-tip="tip-rl-getfile">getFile</span>
+      <span class="plain">().toPath());</span>
+    </div>
+    <div class="code-line indent1">}</div>
+    <div class="code-line indent1">&nbsp;</div>
+
+    <div class="code-line indent1"><span class="comment">// ③ Read path from application.properties config</span></div>
+    <div class="code-line indent1">
+      <span class="kw">@</span><span class="classname tooltip-host" data-tip="tip-rl-value">Value</span>
+      <span class="plain">(</span><span class="str">"${app.config.file}"</span><span class="plain">)</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="kw">private</span>
+      <span class="classname"> Resource</span>
+      <span class="plain"> configFile;</span><span class="comment">  // Spring auto-resolves the prefix</span>
+    </div>
+    <div class="code-line indent1">&nbsp;</div>
+    <div class="code-line indent1">
+      <span class="kw">public</span>
+      <span class="type"> String</span>
+      <span class="plain"> readConfig()</span>
+      <span class="kw"> throws</span>
+      <span class="classname"> IOException</span>
+      <span class="plain"> {</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="kw">try</span><span class="plain"> (</span>
+      <span class="classname">BufferedReader</span>
+      <span class="plain"> reader = </span><span class="kw">new</span>
+      <span class="classname"> BufferedReader</span>
+      <span class="plain">(</span>
+    </div>
+    <div class="code-line indent3" style="padding-left:6em">
+      <span class="kw">new</span>
+      <span class="classname"> InputStreamReader</span>
+      <span class="plain">(configFile.</span>
+      <span class="method">getInputStream</span>
+      <span class="plain">()</span>
+      <span class="plain">))) {</span>
+    </div>
+    <div class="code-line indent3" style="padding-left:6em">
+      <span class="kw">return</span>
+      <span class="plain"> reader.lines().collect(</span>
+      <span class="classname">Collectors</span>
+      <span class="plain">.joining(</span><span class="str">"\n"</span><span class="plain">));</span>
+    </div>
+    <div class="code-line indent2">}</div>
+    <div class="code-line indent1">}</div>
+    <div class="code-line">}</div>
+  </div>
+
+  <!-- ── SECTION 2: @Value injection shortcut ── -->
+  <p class="fragment-desc" style="margin-top:28px;margin-bottom:14px;">
+    <strong style="color:var(--accent)">application.properties</strong> — configure the resource paths externally:
+  </p>
+  <div class="code-block">
+    <div class="code-line">
+      <span class="comment"># Classpath resource (inside JAR)</span>
+    </div>
+    <div class="code-line">
+      <span class="type tooltip-host" data-tip="tip-rl-props-cp">app.config.file</span>
+      <span class="plain">=classpath:config/settings.json</span>
+    </div>
+    <div class="code-line">&nbsp;</div>
+    <div class="code-line">
+      <span class="comment"># External file on the server disk</span>
+    </div>
+    <div class="code-line">
+      <span class="type tooltip-host" data-tip="tip-rl-props-file">app.config.file</span>
+      <span class="plain">=file:/etc/myapp/settings.json</span>
+    </div>
+    <div class="code-line">&nbsp;</div>
+    <div class="code-line">
+      <span class="comment"># Remote URL resource</span>
+    </div>
+    <div class="code-line">
+      <span class="type tooltip-host" data-tip="tip-rl-props-url">app.config.file</span>
+      <span class="plain">=https://config-server.example.com/settings.json</span>
+    </div>
+  </div>
+
+  <!-- ── SECTION 3: ResourcePatternResolver ── -->
+  <p class="fragment-desc" style="margin-top:28px;margin-bottom:14px;">
+    <strong style="color:var(--accent)">Load multiple files</strong> with wildcard patterns using <code>ResourcePatternResolver</code>:
+  </p>
+  <div class="code-block">
+    <div class="code-line">
+      <span class="kw">@</span><span class="classname">Autowired</span>
+    </div>
+    <div class="code-line">
+      <span class="kw">private</span>
+      <span class="classname tooltip-host" data-tip="tip-rl-pattern">ResourcePatternResolver</span>
+      <span class="plain"> resolver;</span>
+    </div>
+    <div class="code-line">&nbsp;</div>
+    <div class="code-line">
+      <span class="kw">public void</span>
+      <span class="plain"> loadAllTemplates()</span>
+      <span class="kw"> throws</span>
+      <span class="classname"> IOException</span>
+      <span class="plain"> {</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="classname"> Resource</span>
+      <span class="plain">[] templates = resolver.getResources(</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="str tooltip-host" data-tip="tip-rl-wildcard">"classpath:templates/*.html"</span>
+      <span class="plain">);</span>
+    </div>
+    <div class="code-line">&nbsp;</div>
+    <div class="code-line indent1">
+      <span class="kw">for</span>
+      <span class="plain"> (</span><span class="classname">Resource</span>
+      <span class="plain"> r : templates) {</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="plain">System.out.println(r.</span>
+      <span class="method tooltip-host" data-tip="tip-rl-resourcemethods">getFilename</span>
+      <span class="plain">());</span>
+    </div>
+    <div class="code-line indent1">}</div>
+    <div class="code-line">}</div>
+  </div>
+
+  <!-- Resource prefix reference table -->
+  <div class="modifier-table" style="margin-top:28px;">
+    <div class="mod-row header-row" style="grid-template-columns:160px 1fr 1fr;">
+      <span>Prefix</span><span>Source</span><span>Example</span>
+    </div>
+    <div class="mod-row tooltip-host" data-tip="tip-rl-classpathprefix" style="grid-template-columns:160px 1fr 1fr;">
+      <span class="badge def">classpath:</span>
+      <span style="font-size:.8rem;color:var(--muted)">JAR / resources folder</span>
+      <span style="font-size:.78rem;color:var(--str)">classpath:data/file.json</span>
+    </div>
+    <div class="mod-row tooltip-host" data-tip="tip-rl-fileprefix" style="grid-template-columns:160px 1fr 1fr;">
+      <span class="badge pub">file:</span>
+      <span style="font-size:.8rem;color:var(--muted)">Server filesystem</span>
+      <span style="font-size:.78rem;color:var(--str)">file:/opt/app/config.yml</span>
+    </div>
+    <div class="mod-row tooltip-host" data-tip="tip-rl-props-url" style="grid-template-columns:160px 1fr 1fr;">
+      <span class="badge prot">http(s):</span>
+      <span style="font-size:.8rem;color:var(--muted)">Remote URL</span>
+      <span style="font-size:.78rem;color:var(--str)">https://cdn.example.com/f.json</span>
+    </div>
+    <div class="mod-row tooltip-host" data-tip="tip-rl-wildcard" style="grid-template-columns:160px 1fr 1fr;">
+      <span class="badge priv">classpath*:</span>
+      <span style="font-size:.8rem;color:var(--muted)">All JARs on classpath</span>
+      <span style="font-size:.78rem;color:var(--str)">classpath*:config/*.xml</span>
+    </div>
+  </div>
+
+  <!-- Tooltips -->
+  <div id="tip-rl-resource" class="speech-bubble">
+    <strong>Resource (interface)</strong><br>
+    Spring's abstraction over any file-like thing — classpath entry, filesystem file, URL, or byte array.<br>
+    Key methods: <code>getInputStream()</code>, <code>getFile()</code>, <code>getURI()</code>, <code>exists()</code>, <code>getFilename()</code><br>
+    <span class="tip-range">Your code doesn't need to care <em>where</em> the file comes from — just use the <code>Resource</code> API.</span>
+  </div>
+  <div id="tip-rl-loader" class="speech-bubble">
+    <strong>ResourceLoader (interface)</strong><br>
+    Provides a single method: <code>getResource(String location)</code>.<br>
+    The location string determines the type of Resource returned based on its prefix.<br>
+    <span class="tip-range">All Spring <code>ApplicationContext</code> implementations also implement <code>ResourceLoader</code>.</span>
+  </div>
+  <div id="tip-rl-classpathprefix" class="speech-bubble">
+    <strong>classpath: prefix</strong><br>
+    Loads the file from the application's classpath — typically <code>src/main/resources/</code>.<br>
+    Works inside packaged JARs — the file is embedded in the archive.<br>
+    <span class="tip-range">Example: <code>classpath:data/users.csv</code> → <code>src/main/resources/data/users.csv</code></span>
+  </div>
+  <div id="tip-rl-inputstream" class="speech-bubble">
+    <strong>try-with-resources (InputStream)</strong><br>
+    The <code>try (InputStream is = ...)</code> syntax automatically closes the stream when done.<br>
+    Always use this pattern — forgetting to close streams causes resource leaks.<br>
+    <span class="tip-range">Any class implementing <code>AutoCloseable</code> can be used in try-with-resources.</span>
+  </div>
+  <div id="tip-rl-getinputstream" class="speech-bubble">
+    <strong>.getInputStream()</strong><br>
+    Opens and returns a raw byte stream to the resource's content.<br>
+    Works for <em>all</em> resource types — classpath, filesystem, and URLs alike.<br>
+    <span class="tip-range">Use <code>InputStreamReader</code> to read as text, <code>readAllBytes()</code> for binary.</span>
+  </div>
+  <div id="tip-rl-fileprefix" class="speech-bubble">
+    <strong>file: prefix</strong><br>
+    Loads from an absolute path on the server's local filesystem.<br>
+    Perfect for config files deployed <em>outside</em> the JAR (e.g. <code>/etc/myapp/</code>).<br>
+    <span class="tip-range">Use relative path without prefix for paths relative to the JVM working directory.</span>
+  </div>
+  <div id="tip-rl-getfile" class="speech-bubble">
+    <strong>.getFile()</strong><br>
+    Returns a <code>java.io.File</code> object for filesystem resources.<br>
+    Throws <code>FileNotFoundException</code> for classpath resources inside JARs — use <code>getInputStream()</code> instead.<br>
+    <span class="tip-range">Safe rule: always prefer <code>getInputStream()</code> for maximum portability.</span>
+  </div>
+  <div id="tip-rl-value" class="speech-bubble">
+    <strong>@Value injection of Resource</strong><br>
+    Spring can inject a <code>Resource</code> directly from a property value.<br>
+    The prefix (<code>classpath:</code>, <code>file:</code>) in the property value tells Spring how to resolve it.<br>
+    <span class="tip-range">Swapping from classpath to file system requires only a config change — no code change!</span>
+  </div>
+  <div id="tip-rl-props-cp" class="speech-bubble">
+    <strong>Classpath resource in properties</strong><br>
+    <code>classpath:config/settings.json</code> points to <code>src/main/resources/config/settings.json</code>.<br>
+    This file is bundled <em>inside</em> the JAR at deployment time.<br>
+    <span class="tip-range">Good for default configs. Override at runtime with a <code>file:</code> path.</span>
+  </div>
+  <div id="tip-rl-props-file" class="speech-bubble">
+    <strong>External file in properties</strong><br>
+    <code>file:/etc/myapp/settings.json</code> reads from the server filesystem.<br>
+    File must exist at that path at runtime — not bundled in the JAR.<br>
+    <span class="tip-range">Ideal for production secrets, environment-specific configs, or files that change between deploys.</span>
+  </div>
+  <div id="tip-rl-props-url" class="speech-bubble">
+    <strong>Remote URL resource</strong><br>
+    Spring can load a resource over HTTP/HTTPS — useful for config servers or CDN-hosted assets.<br>
+    Uses standard Java URL connection internally.<br>
+    <span class="tip-range">For distributed config management, prefer Spring Cloud Config Server.</span>
+  </div>
+  <div id="tip-rl-pattern" class="speech-bubble">
+    <strong>ResourcePatternResolver</strong><br>
+    Extends <code>ResourceLoader</code> to support <em>wildcard patterns</em> in paths.<br>
+    Returns an array of all matching resources.<br>
+    <span class="tip-range"><code>ApplicationContext</code> implements this — you can also inject it directly.</span>
+  </div>
+  <div id="tip-rl-wildcard" class="speech-bubble">
+    <strong>Wildcard patterns</strong><br>
+    <code>*.html</code> — all HTML files in the folder.<br>
+    <code>classpath*:</code> prefix (with asterisk) — scans across <em>all</em> JARs on the classpath, not just the app JAR.<br>
+    <span class="tip-range">Useful for plugin architectures where multiple JARs contribute config files.</span>
+  </div>
+  <div id="tip-rl-resourcemethods" class="speech-bubble">
+    <strong>Resource utility methods</strong><br>
+    <code>.getFilename()</code> — just the file name (<code>settings.json</code>).<br>
+    <code>.exists()</code> — check before reading to avoid exceptions.<br>
+    <code>.contentLength()</code> — file size in bytes.<br>
+    <code>.lastModified()</code> — last-modified timestamp.<br>
+    <span class="tip-range">Always call <code>.exists()</code> before reading optional resources.</span>
+  </div>
+</div>

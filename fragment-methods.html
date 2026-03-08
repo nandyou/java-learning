@@ -1,0 +1,163 @@
+<div class="fragment-root">
+  <h2 class="fragment-title">Java Methods</h2>
+  <p class="fragment-desc">Methods define the <em>behavior</em> of a class. Every method has a signature, body, and optional return value.</p>
+
+  <div class="code-block">
+    <div class="code-line">
+      <span class="kw">public class</span>
+      <span class="classname"> Calculator</span>
+      <span class="plain"> {</span>
+    </div>
+    <div class="code-line indent1">&nbsp;</div>
+    <div class="code-line indent1">
+      <span class="comment">// ① Basic method anatomy</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="kw tooltip-host" data-tip="tip-modifier">public</span>
+      <span class="type tooltip-host" data-tip="tip-returntype"> int</span>
+      <span class="method tooltip-host" data-tip="tip-methodname"> add</span>
+      <span class="plain">(</span>
+      <span class="type tooltip-host" data-tip="tip-params">int a</span>
+      <span class="plain">, </span>
+      <span class="type">int b</span>
+      <span class="plain">) {</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="kw">return</span>
+      <span class="plain"> a + b;</span>
+    </div>
+    <div class="code-line indent1">}</div>
+    <div class="code-line indent1">&nbsp;</div>
+    <div class="code-line indent1">
+      <span class="comment">// ② void method — returns nothing</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="kw">public</span>
+      <span class="type tooltip-host" data-tip="tip-void"> void</span>
+      <span class="plain"> printResult(</span>
+      <span class="type">int</span>
+      <span class="plain"> result) {</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="plain">System.out.println(</span>
+      <span class="str">"Result: "</span>
+      <span class="plain"> + result);</span>
+    </div>
+    <div class="code-line indent1">}</div>
+    <div class="code-line indent1">&nbsp;</div>
+    <div class="code-line indent1">
+      <span class="comment">// ③ Method overloading</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="kw">public</span>
+      <span class="type"> double</span>
+      <span class="method tooltip-host" data-tip="tip-overload"> add</span>
+      <span class="plain">(</span>
+      <span class="type">double a</span>
+      <span class="plain">, </span>
+      <span class="type">double b</span>
+      <span class="plain">) {</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="kw">return</span>
+      <span class="plain"> a + b;</span>
+    </div>
+    <div class="code-line indent1">}</div>
+    <div class="code-line indent1">&nbsp;</div>
+    <div class="code-line indent1">
+      <span class="comment">// ④ Static method — no instance needed</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="kw">public</span>
+      <span class="kw tooltip-host" data-tip="tip-static-method"> static</span>
+      <span class="type"> int</span>
+      <span class="plain"> square(</span>
+      <span class="type">int</span>
+      <span class="plain"> n) {</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="kw">return</span>
+      <span class="plain"> n * n;</span>
+    </div>
+    <div class="code-line indent1">}</div>
+    <div class="code-line indent1">&nbsp;</div>
+    <div class="code-line indent1">
+      <span class="comment">// ⑤ Varargs — variable argument count</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="kw">public</span>
+      <span class="type"> int</span>
+      <span class="plain"> sum(</span>
+      <span class="type tooltip-host" data-tip="tip-varargs">int...</span>
+      <span class="plain"> numbers) {</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="type">int</span>
+      <span class="plain"> total = </span>
+      <span class="num">0</span>
+      <span class="plain">;</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="kw">for</span>
+      <span class="plain"> (</span>
+      <span class="type">int</span>
+      <span class="plain"> n : numbers) total += n;</span>
+    </div>
+    <div class="code-line indent2">
+      <span class="kw">return</span>
+      <span class="plain"> total;</span>
+    </div>
+    <div class="code-line indent1">}</div>
+    <div class="code-line">}</div>
+  </div>
+
+  <!-- Tooltips -->
+  <div id="tip-modifier" class="speech-bubble">
+    <strong>Access Modifier</strong><br>
+    Controls who can call this method.<br>
+    <code>public</code> = anyone | <code>private</code> = this class only | <code>protected</code> = package + subclasses<br>
+    <span class="tip-range">Methods should generally be as restrictive as possible.</span>
+  </div>
+  <div id="tip-returntype" class="speech-bubble">
+    <strong>Return Type</strong><br>
+    Declares what type of value the method sends back to the caller.<br>
+    The <code>return</code> statement must provide a value of this exact type.<br>
+    <span class="tip-range">Use <code>void</code> if the method returns nothing.</span>
+  </div>
+  <div id="tip-methodname" class="speech-bubble">
+    <strong>Method Name</strong><br>
+    Identifies the method. Should be a <em>verb</em> describing what it does.<br>
+    Java convention: <strong>camelCase</strong> starting with a lowercase letter.<br>
+    <span class="tip-range">Examples: <code>calculateTotal()</code>, <code>getUserById()</code></span>
+  </div>
+  <div id="tip-params" class="speech-bubble">
+    <strong>Parameters</strong><br>
+    Values passed <em>into</em> the method when it is called.<br>
+    Format: <code>type name</code>. Multiple params separated by commas.<br>
+    <span class="tip-range">Java passes primitives by <em>value</em>, objects by <em>reference</em>.</span>
+  </div>
+  <div id="tip-void" class="speech-bubble">
+    <strong>void</strong><br>
+    Means the method does <em>not</em> return a value.<br>
+    Used for methods that perform an action (like printing) rather than computing a result.<br>
+    <span class="tip-range">Cannot use the result of a void method in an expression.</span>
+  </div>
+  <div id="tip-overload" class="speech-bubble">
+    <strong>Method Overloading</strong><br>
+    Same method name, different parameter types or count.<br>
+    Java picks the right version at <em>compile time</em> based on the arguments you pass.<br>
+    <span class="tip-range">Return type alone is NOT enough to overload a method.</span>
+  </div>
+  <div id="tip-static-method" class="speech-bubble">
+    <strong>static method</strong><br>
+    Belongs to the class, not an instance. Call without creating an object:<br>
+    <code>Calculator.square(5)</code><br>
+    <span class="tip-range">Cannot access instance fields or call non-static methods directly.</span>
+  </div>
+  <div id="tip-varargs" class="speech-bubble">
+    <strong>Varargs ( int... )</strong><br>
+    Allows passing any number of arguments of the same type.<br>
+    Inside the method, treated as an array.<br>
+    <span class="tip-range">Must be the <em>last</em> parameter. Only one vararg per method.</span>
+  </div>
+</div>

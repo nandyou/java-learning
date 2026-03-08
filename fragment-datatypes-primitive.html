@@ -1,0 +1,132 @@
+<div class="fragment-root">
+  <h2 class="fragment-title">Primitive Data Types in Java</h2>
+  <p class="fragment-desc">Java has 8 primitive types — they hold raw values directly in memory, not references.</p>
+
+  <div class="code-block">
+    <div class="code-line">
+      <span class="kw tooltip-host" data-tip="tip-public1">public</span>
+      <span class="plain"> class PrimitiveDemo {</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="comment">// Integer types</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="type tooltip-host" data-tip="tip-byte">byte</span>
+      <span class="plain"> age = </span>
+      <span class="num">25</span>
+      <span class="plain">;</span>
+      <span class="comment">  // 8-bit, range: -128 to 127</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="type tooltip-host" data-tip="tip-short">short</span>
+      <span class="plain"> year = </span>
+      <span class="num">2024</span>
+      <span class="plain">;</span>
+      <span class="comment"> // 16-bit, range: -32,768 to 32,767</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="type tooltip-host" data-tip="tip-int">int</span>
+      <span class="plain"> population = </span>
+      <span class="num">8000000</span>
+      <span class="plain">;</span>
+      <span class="comment"> // 32-bit (most common)</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="type tooltip-host" data-tip="tip-long">long</span>
+      <span class="plain"> distance = </span>
+      <span class="num">9876543210L</span>
+      <span class="plain">;</span>
+      <span class="comment"> // 64-bit, note the L suffix</span>
+    </div>
+    <div class="code-line indent1">&nbsp;</div>
+    <div class="code-line indent1">
+      <span class="comment">// Floating-point types</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="type tooltip-host" data-tip="tip-float">float</span>
+      <span class="plain"> price = </span>
+      <span class="num">9.99f</span>
+      <span class="plain">;</span>
+      <span class="comment"> // 32-bit, note the f suffix</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="type tooltip-host" data-tip="tip-double">double</span>
+      <span class="plain"> pi = </span>
+      <span class="num">3.14159265359</span>
+      <span class="plain">;</span>
+      <span class="comment"> // 64-bit, default for decimals</span>
+    </div>
+    <div class="code-line indent1">&nbsp;</div>
+    <div class="code-line indent1">
+      <span class="comment">// Other types</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="type tooltip-host" data-tip="tip-char">char</span>
+      <span class="plain"> grade = </span>
+      <span class="str">'A'</span>
+      <span class="plain">;</span>
+      <span class="comment"> // 16-bit Unicode character</span>
+    </div>
+    <div class="code-line indent1">
+      <span class="type tooltip-host" data-tip="tip-boolean">boolean</span>
+      <span class="plain"> isActive = </span>
+      <span class="kw">true</span>
+      <span class="plain">;</span>
+      <span class="comment"> // true or false only</span>
+    </div>
+    <div class="code-line">}</div>
+  </div>
+
+  <!-- Tooltips -->
+  <div id="tip-byte" class="speech-bubble">
+    <strong>byte</strong><br>
+    Smallest integer type. Uses only 1 byte (8 bits) of memory.<br>
+    Perfect for storing small numbers or raw binary data.<br>
+    <span class="tip-range">Range: -128 → 127</span>
+  </div>
+  <div id="tip-short" class="speech-bubble">
+    <strong>short</strong><br>
+    A 16-bit integer. Rarely used in modern Java — <code>int</code> is almost always preferred.<br>
+    <span class="tip-range">Range: -32,768 → 32,767</span>
+  </div>
+  <div id="tip-int" class="speech-bubble">
+    <strong>int</strong><br>
+    The <em>default</em> integer type in Java. 32-bit signed.<br>
+    Use this unless you have a specific reason to use <code>byte</code>, <code>short</code>, or <code>long</code>.<br>
+    <span class="tip-range">Range: -2,147,483,648 → 2,147,483,647</span>
+  </div>
+  <div id="tip-long" class="speech-bubble">
+    <strong>long</strong><br>
+    64-bit integer for very large numbers. Always append <code>L</code> to the literal (e.g. <code>100L</code>) to avoid compiler errors.<br>
+    <span class="tip-range">Range: ±9.2 × 10¹⁸</span>
+  </div>
+  <div id="tip-float" class="speech-bubble">
+    <strong>float</strong><br>
+    32-bit floating-point. Less precise than <code>double</code>. Always use <code>f</code> suffix on literals.<br>
+    Avoid for financial calculations — use <code>BigDecimal</code> instead.<br>
+    <span class="tip-range">~7 decimal digits of precision</span>
+  </div>
+  <div id="tip-double" class="speech-bubble">
+    <strong>double</strong><br>
+    64-bit floating-point. The <em>default</em> for decimal numbers in Java.<br>
+    Twice the precision of <code>float</code>.<br>
+    <span class="tip-range">~15 decimal digits of precision</span>
+  </div>
+  <div id="tip-char" class="speech-bubble">
+    <strong>char</strong><br>
+    Stores a single Unicode character using single quotes.<br>
+    Internally stored as a 16-bit unsigned integer (0–65,535).<br>
+    <span class="tip-range">Example: <code>'A'</code>, <code>'€'</code>, <code>'\n'</code></span>
+  </div>
+  <div id="tip-boolean" class="speech-bubble">
+    <strong>boolean</strong><br>
+    Can only hold <code>true</code> or <code>false</code>.<br>
+    Used for all conditional logic and flags. JVM size is implementation-dependent.<br>
+    <span class="tip-range">Values: true | false</span>
+  </div>
+  <div id="tip-public1" class="speech-bubble">
+    <strong>public</strong> (access modifier)<br>
+    The class is visible to <em>all other classes</em> everywhere.<br>
+    A file can only have <strong>one</strong> public class, and it must match the filename.
+  </div>
+</div>

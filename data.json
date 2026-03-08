@@ -1,0 +1,106 @@
+{
+  "topics": [
+    {
+      "id": "class-structure",
+      "label": "Java Class Structure",
+      "description": "Anatomy of a Java class",
+      "fragment": "fragment-class-structure.html"
+    },
+    {
+      "id": "methods",
+      "label": "Java Methods",
+      "description": "Method signatures, parameters, return types",
+      "fragment": "fragment-methods.html"
+    },
+    {
+      "id": "access-modifiers",
+      "label": "Access Modifiers",
+      "description": "public, private, protected, default",
+      "fragment": "fragment-access-modifiers.html"
+    },
+    {
+      "id": "datatypes-primitive",
+      "label": "Primitive Data Types",
+      "description": "Java's 8 built-in primitive types",
+      "fragment": "fragment-datatypes-primitive.html"
+    },
+    {
+      "id": "datatypes-reference",
+      "label": "Reference Data Types",
+      "description": "Objects, arrays, and Strings in Java",
+      "fragment": "fragment-datatypes-reference.html"
+    },
+    {
+      "id": "arithmetic",
+      "label": "Arithmetic Operations",
+      "description": "Operators, precedence, compound assignment, Math class",
+      "fragment": "fragment-arithmetic.html"
+    },
+    {
+      "id": "string-ops",
+      "label": "String Operations",
+      "description": "length, substring, split, replace, compare, StringBuilder",
+      "fragment": "fragment-string-ops.html"
+    },
+    {
+      "id": "ifelse",
+      "label": "if / else Conditions",
+      "description": "Branching logic, else-if chains, ternary, logical operators",
+      "fragment": "fragment-ifelse.html"
+    },
+    {
+      "id": "while-loop",
+      "label": "while Loop",
+      "description": "Condition-first loops, sentinel values, infinite loops",
+      "fragment": "fragment-while-loop.html"
+    },
+    {
+      "id": "dowhile-loop",
+      "label": "do-while Loop",
+      "description": "Body-first loop — always runs at least once",
+      "fragment": "fragment-dowhile-loop.html"
+    },
+    {
+      "id": "for-loop",
+      "label": "for Loop",
+      "description": "Classic, enhanced for-each, break, continue, nested loops",
+      "fragment": "fragment-for-loop.html"
+    },
+    {
+      "id": "pojo",
+      "label": "POJO Classes",
+      "description": "Plain Old Java Objects — fields, constructors, getters, setters",
+      "fragment": "fragment-pojo.html"
+    },
+    {
+      "id": "arrays",
+      "label": "Java Arrays",
+      "description": "Fixed-size ordered collections, indexing, 2D arrays",
+      "fragment": "fragment-arrays.html"
+    },
+    {
+      "id": "list",
+      "label": "Java List",
+      "description": "Dynamic collections with ArrayList and Collections API",
+      "fragment": "fragment-list.html"
+    },
+    {
+      "id": "spring-controller",
+      "label": "Spring MVC Controller",
+      "description": "@Controller anatomy, Model, @ResponseBody, @ExceptionHandler, @RestController",
+      "fragment": "fragment-spring-controller.html"
+    },
+    {
+      "id": "spring-mappings",
+      "label": "Spring Controller Mappings",
+      "description": "GET, POST, PUT, PATCH, DELETE — @PathVariable, @RequestParam, @RequestBody, ResponseEntity",
+      "fragment": "fragment-spring-mappings.html"
+    },
+    {
+      "id": "spring-resourceloader",
+      "label": "Spring ResourceLoader",
+      "description": "Load files from classpath, filesystem, and URLs — @Value, ResourcePatternResolver",
+      "fragment": "fragment-spring-resourceloader.html"
+    }
+  ]
+}
